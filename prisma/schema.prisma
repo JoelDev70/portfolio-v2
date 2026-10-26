@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// PROJECTS
+// ============================================================
+model Project {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  subtitle    String?
+  description String    @db.Text
+  
+  // Case study
+  context     String?   @db.Text
+  problem     String?   @db.Text
+  solution    String?   @db.Text
+  results     String?   @db.Text
+  
+  // Visuels
+  coverImage  String?
+  images      String[]  @default([])
+  
+  // Stack
+  techStack   String[]  @default([])
+  
+  // Meta
+  client      String?
+  role        String?
+  year        Int?
+  duration    String?
+  
+  // Statut
+  published   Boolean   @default(false)
+  featured    Boolean   @default(false)
+  order       Int       @default(0)
+  
+  // Liens
+  liveUrl     String?
+  repoUrl     String?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================================
+// BLOG (DevUp)
+// ============================================================
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  excerpt     String   @db.Text
+  content     String   @db.Text   // Markdown
+  coverImage  String?
+  tags        String[] @default([])
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ============================================================
+// CONTACT
+// ============================================================
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ============================================================
+// NEWSLETTER (Optionnel pour DevUp)
+// ============================================================
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

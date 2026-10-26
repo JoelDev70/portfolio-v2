@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Mode Clair (Optionnel, mais on le prépare) */
+    --background: 0 0% 100%;
+    --foreground: 270 100% 5%; /* Ton violet foncé */
+    --primary: 270 100% 5%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 189 94% 43%; /* Cyan */
+    --accent-foreground: 0 0% 100%;
+    --muted: 270 20% 90%;
+    --muted-foreground: 270 10% 40%;
+    --border: 270 20% 85%;
+  }
+
+  .dark {
+    /* Mode Sombre (Tes couleurs de base) */
+    --background: 273 100% 5%; /* #0f001b */
+    --foreground: 274 29% 75%; /* #c7b3ce */
+    --primary: 274 29% 75%; /* Lavande */
+    --primary-foreground: 273 100% 5%;
+    --accent: 189 94% 43%; /* Cyan #06b6d4 */
+    --accent-foreground: 273 100% 5%;
+    --muted: 273 50% 12%;
+    --muted-foreground: 274 20% 60%;
+    --border: 273 30% 20%;
+  }
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Arial, Helvetica, sans-serif;
+}
