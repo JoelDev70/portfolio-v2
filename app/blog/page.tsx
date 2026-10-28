@@ -1,0 +1,120 @@
+import { prisma } from "@/lib/prisma";
+import { BlogCard } from "@/components/blog-card";
+
+export default async function BlogPage() {
+  const posts = await prisma.post.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return (
+    <main className="max-w-4xl mx-auto px-4 py-24">
+      <header className="mb-16">
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
+          Le Blog <span className="text-accent">DevUp</span>
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-2xl">
+          Apprendre, coder et évoluer. Mes articles sur le développement Fullstack, les bonnes pratiques et mon parcours.
+        </p>
+      </header>
+
+      {posts.length === 0 ? (
+        <p className="text-muted-foreground">Aucun article publié pour le moment.</p>
+      ) : (
+        <div className="space-y-8">
+          {posts.map((post) => (
+            <BlogCard 
+              key={post.id}
+              slug={post.slug}
+              title={post.title}
+              excerpt={post.excerpt}
+              date={post.createdAt.toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' })}
+              readTime="5 min" // On mettra un calcul dynamique plus tard
+              tags={post.tags || []}
+            />
+          ))}
+        </div>
+      )}
+    </main>
+  );
+}
+
+
+
+
+
+
+
+
+// "use client";
+
+// import { motion } from "framer-motion";
+// import { BlogCard } from "@/components/blog-card";
+
+// const posts = [
+//   {
+//     slug: "pourquoi-j-ai-choisi-docker-pour-mon-portfolio",
+//     title: "Pourquoi j'ai choisi Docker pour mon portfolio",
+//     excerpt: "Découvrez comment Docker m'a permis de garantir un environnement de développement identique à la production et d'éviter le fameux 'ça marche sur ma machine'.",
+//     date: "24 Octobre 2026",
+//     readTime: "5 min",
+//     tags: ["Docker", "DevOps", "Next.js"],
+//   },
+//   {
+//     slug: "comprendre-prisma-7-avec-next-js",
+//     title: "Comprendre Prisma 7 avec Next.js",
+//     excerpt: "Un guide complet sur la configuration de Prisma 7, la gestion des migrations et l'utilisation des adaptateurs dans un environnement Serverless.",
+//     date: "20 Octobre 2026",
+//     readTime: "8 min",
+//     tags: ["Prisma", "PostgreSQL", "Next.js"],
+//   },
+//   {
+//     slug: "comment-j-ai-securise-amicongo-export",
+//     title: "Comment j'ai sécurisé AMICONGO Export",
+//     excerpt: "Retour d'expérience sur la mise en place d'une authentification forte, de tests automatisés et d'un pipeline CI/CD pour un projet à fort enjeu.",
+//     date: "15 Octobre 2026",
+//     readTime: "12 min",
+//     tags: ["Sécurité", "Django", "CI/CD"],
+//   },
+// ];
+
+// export default function BlogPage() {
+//   return (
+//     <main className="max-w-4xl mx-auto px-4 py-24">
+//       <motion.header 
+//         initial={{ opacity: 0, y: -20 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         transition={{ duration: 0.6 }}
+//         className="mb-16"
+//       >
+//         <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
+//           Le Blog <span className="text-accent">DevUp</span>
+//         </h1>
+//         <p className="text-xl text-muted-foreground max-w-2xl">
+//           Apprendre, coder et évoluer. Mes articles sur le développement Fullstack, les bonnes pratiques et mon parcours.
+//         </p>
+//       </motion.header>
+
+//       <div className="space-y-8">
+//         {posts.map((post) => (
+//           <BlogCard 
+//             key={post.slug}
+//             {...post}
+//           />
+//         ))}
+//       </div>
+//     </main>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
