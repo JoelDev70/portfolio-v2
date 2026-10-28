@@ -13,9 +13,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
-
   app:
-    image: node:20-alpine
+    image: node:22-alpine
     container_name: joel_app
     working_dir: /app
     volumes:
@@ -28,7 +27,7 @@ services:
       - DATABASE_URL=postgresql://joel_admin:super_mot_de_passe_securise@db:5432/joel_portfolio_db?schema=public
     command: sh -c "npm install && npm run dev"
     depends_on:
-      - db
+      - db  
 
 volumes:
   postgres_data:
