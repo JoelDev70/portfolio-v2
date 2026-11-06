@@ -19,6 +19,9 @@ export function Navbar() {
           <Link href="#contact" className="text-sm font-medium hover:text-accent transition-colors">
             Contact
           </Link>
+          <Link href="/about" className="text-sm font-medium hover:text-accent transition-colors">
+            À propos
+          </Link>
           <ThemeToggle />
         </div>
       </div>
