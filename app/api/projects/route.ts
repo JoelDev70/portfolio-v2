@@ -28,6 +28,8 @@ export async function POST(request: Request) {
         liveUrl: body.liveUrl, 
         repoUrl: body.repoUrl, 
         published: body.published,
+        coverImage: body.coverImage, 
+
       }
     });
     return NextResponse.json(project, { status: 201 });

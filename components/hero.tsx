@@ -1,9 +1,25 @@
 import Link from "next/link";
+import Image from "next/image"; // <-- Import de next/image
 import { ArrowRight, Terminal } from "lucide-react";
 
 export function Hero() {
   return (
     <section className="relative flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
+      
+      {/* Photo de profil avec halo */}
+      <div className="relative w-36 h-36 mb-8">
+        <div className="absolute inset-0 bg-accent rounded-full blur-2xl opacity-20 animate-pulse"></div>
+        <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-2xl">
+          <Image
+            src="/uploads/avatar.JPG" // Le chemin vers ton image uploadée
+            alt="Joel Vutsumbwa"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      </div>
+
       {/* Badge de disponibilité */}
       <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 text-sm font-medium rounded-full bg-muted text-muted-foreground border border-border">
         <span className="relative flex h-2 w-2">

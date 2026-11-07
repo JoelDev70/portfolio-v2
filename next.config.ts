@@ -10,3 +10,24 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+
+
+// import type { NextConfig } from "next";
+
+// const nextConfig: NextConfig = {
+//   turbopack: {
+//     root: __dirname,
+//   },
+//   //  Autorise le HMR depuis 127.0.0.1 (et localhost par défaut)
+//   allowedDevOrigins: ["127.0.0.1", "localhost"],
+// //
+//   // Augmente la limite de taille pour les Server Actions / Route Handlers
+//   experimental: {
+//     serverActions: {
+//       bodySizeLimit: '10mb',
+//     },
+//   },
+// };
+
+// export default nextConfig;

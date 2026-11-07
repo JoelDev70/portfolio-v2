@@ -102,6 +102,8 @@ export default function AdminPage() {
                 liveUrl: formData.get("liveUrl"), 
                 repoUrl: formData.get("repoUrl"),
                 published: true,
+                coverImage: formData.get("coverImage"), 
+
               };
 
               try {
@@ -166,7 +168,38 @@ export default function AdminPage() {
                   <input name="repoUrl" type="url" placeholder="https://github.com/..." className="w-full p-2 bg-background border border-border rounded-md" />
                 </div>
               </div>
+            <div>
+              <label className="block text-sm mb-1">Image de couverture</label>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
 
+                  const formData = new FormData();
+                  formData.append("file", file);
+
+                  try {
+                    const res = await fetch("/api/upload", { method: "POST", body: formData });
+                    const data = await res.json();
+                    
+                    // On ajoute l'URL au formulaire
+                    if (data.url) {
+                      const inputUrl = document.createElement("input");
+                      inputUrl.type = "hidden";
+                      inputUrl.name = "coverImage";
+                      inputUrl.value = data.url;
+                      e.target.form?.appendChild(inputUrl);
+                      alert("Image uploadée avec succès !");
+                    }
+                  } catch (err) {
+                    alert("Erreur upload");
+                  }
+                }}
+                className="w-full p-2 bg-background border border-border rounded-md"
+              />
+            </div>
               <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
                 Publier le projet
               </button>
