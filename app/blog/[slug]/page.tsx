@@ -4,9 +4,33 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
-// import { CommentsSection } from "@/components/comments-section";
+import type { Metadata } from "next";
+import { CommentsSection } from "@/components/comments-section";
 
 
+// 1. On génère les métadonnées dynamiques
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  
+  const post = await prisma.post.findUnique({
+    where: { slug: slug }
+  });
+
+  if (!post) {
+    return { title: "Article introuvable" };
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      images: post.coverImage ? [{ url: post.coverImage }] : [],
+    },
+  };
+}
 
 export default async function BlogPostPage({ 
   params 
@@ -65,9 +89,14 @@ export default async function BlogPostPage({
       )}
 
       {/* Contenu de l'article avec rendu Markdown */}
+     
       <div className="prose prose-invert prose-lg max-w-none prose-headings:text-foreground prose-a:text-accent hover:prose-a:text-accent/80 prose-code:text-accent prose-pre:bg-muted/50">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
+
+      {/* Ajout de la section commentaires */}
+      <CommentsSection postId={post.id} />
+
     </main>
   );
 }

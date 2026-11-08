@@ -2,6 +2,34 @@ import Link from "next/link";
 import { ArrowLeft, ExternalLink, Code } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { prisma } from "@/lib/prisma";
+
+// ... (tes autres imports)
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  
+  const project = await prisma.project.findUnique({
+    where: { slug: slug }
+  });
+
+  if (!project) {
+    return { title: "Projet introuvable" };
+  }
+
+  return {
+    title: project.title,
+    description: project.description || "Découvrez ce projet réalisé par Joel Vutsumbwa.",
+    openGraph: {
+      title: project.title,
+      description: project.description || "",
+      type: "article",
+      images: project.coverImage ? [{ url: project.coverImage }] : [],
+    },
+  };
+}
+
 
 export default async function ProjectPage({ 
   params 

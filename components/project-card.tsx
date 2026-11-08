@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { BrowserMockup } from "./browser-mockup";
 
 interface ProjectCardProps {
   title: string;
@@ -13,17 +13,13 @@ interface ProjectCardProps {
 export function ProjectCard({ title, description, tags, link, coverImage }: ProjectCardProps) {
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-background transition-all hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5">
-      {/* Image du projet */}
-      <div className="relative aspect-video overflow-hidden bg-muted">
+      
+      {/* Image ou Fallback stylé */}
+      <div className="relative w-full p-4 pb-0">
         {coverImage ? (
-          <Image 
-            src={coverImage} 
-            alt={title} 
-            fill 
-            className="object-cover group-hover:scale-105 transition-transform duration-500" 
-          />
+          <BrowserMockup imageUrl={coverImage} alt={title} />
         ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-background to-muted/50 p-6 text-center">
+          <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-border bg-gradient-to-br from-background to-muted/50 flex flex-col items-center justify-center p-6 text-center">
             <span className="text-2xl font-bold text-foreground/80 mb-2">{title}</span>
             <div className="flex flex-wrap justify-center gap-2">
               {tags.slice(0, 3).map(tag => (
@@ -36,7 +32,7 @@ export function ProjectCard({ title, description, tags, link, coverImage }: Proj
         )}
       </div>
 
-      {/* Contenu */}
+      {/* Contenu textuel */}
       <div className="flex flex-col flex-1 p-6">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xl font-bold">{title}</h3>
@@ -45,7 +41,7 @@ export function ProjectCard({ title, description, tags, link, coverImage }: Proj
           </Link>
         </div>
         
-        <p className="text-muted-foreground text-sm mb-6 flex-1">
+        <p className="text-muted-foreground text-sm mb-6 flex-1 line-clamp-3">
           {description}
         </p>
 
