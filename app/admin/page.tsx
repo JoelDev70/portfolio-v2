@@ -9,7 +9,7 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"project" | "post" | "messages" | "testimonial">("project");
+  const [activeTab, setActiveTab] = useState<"project" | "post" | "messages" | "testimonial" | "comments">("project");
 
   const ADMIN_PASSWORD = "joel2026"; 
 

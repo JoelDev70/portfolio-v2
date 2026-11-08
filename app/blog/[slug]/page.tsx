@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
+// import { CommentsSection } from "@/components/comments-section";
+
 
 
 export default async function BlogPostPage({ 

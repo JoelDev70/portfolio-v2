@@ -6,7 +6,7 @@ import { Quote, Star } from "lucide-react";
 import Image from "next/image";
 
 interface Testimonial {
-  id: string;
+  id: string | number;
   name: string;
   company: string;
   role: string;
@@ -14,118 +14,124 @@ interface Testimonial {
   avatar: string | null;
 }
 
+const fallbackTestimonials: Testimonial[] = [
+  {
+    id: 1,
+    name: "Responsable IT",
+    company: "AMICONGO Export",
+    role: "IT Manager",
+    content: "Joel a su transformer un besoin métier complexe en une application web fluide et sécurisée. Son expertise technique et sa rigueur sur les tests nous ont permis de gagner un temps précieux.",
+    avatar: null,
+  },
+  {
+    id: 2,
+    name: "Client Freelance",
+    company: "Projet E-commerce",
+    role: "Fondateur",
+    content: "Un développeur à l'écoute, qui respecte les délais et livre un code propre. La mise en place de Docker et du CI/CD a été un vrai plus pour notre équipe.",
+    avatar: null,
+  },
+  {
+    id: 3,
+    name: "Chef de Projet",
+    company: "Startup Tech",
+    role: "Product Manager",
+    content: "Nous avons fait appel à Joel pour une refonte de notre backend Django. Le résultat est au-delà de nos attentes, avec une sécurité renforcée et des performances améliorées.",
+    avatar: null,
+  },
+];
+
 export function TestimonialsSection() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   fetch("/api/testimonials")
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setTestimonials(data);
-  //       setLoading(false);
-  //     })
-  //     .catch(() => setLoading(false));
-  // }, []);
-    useEffect(() => {
+  useEffect(() => {
     fetch("/api/testimonials")
       .then(res => res.json())
       .then(data => {
-        // On vérifie si data est bien un tableau
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setTestimonials(data);
-        } else {
-          console.error("L'API n'a pas renvoyé un tableau :", data);
-          setTestimonials([]); // On met un tableau vide en cas d'erreur
         }
-        setLoading(false);
       })
-      .catch((err) => {
-        console.error("Erreur de fetch :", err);
-        setTestimonials([]);
-        setLoading(false);
-      });
+      .catch((err) => console.error("Utilisation des données de secours", err))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {
     return (
-      <section className="py-24 bg-muted/5 border-y border-border">
-        <div className="max-w-7xl mx-auto px-4 text-center">
+      <section className="py-24">
+        <div className="max-w-5xl mx-auto text-center">
           <p className="text-muted-foreground animate-pulse">Chargement des témoignages...</p>
         </div>
       </section>
     );
   }
 
-  if (testimonials.length === 0) return null;
-
-  // On duplique le tableau pour l'effet de défilement infini
   const duplicatedTestimonials = [...testimonials, ...testimonials];
 
   return (
-    <section className="py-24 bg-muted/5 border-y border-border overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 mb-16 text-center">
-        <h2 className="text-3xl font-bold tracking-tight mb-4">Ils m'ont fait confiance</h2>
-        <p className="text-muted-foreground">Découvrez ce que mes clients pensent de notre collaboration.</p>
-      </div>
+    <section className="py-24 relative">
+      <div className="max-w-5xl mx-auto px-4 relative">
+        
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold tracking-tight mb-4">Ils m'ont fait confiance</h2>
+          <p className="text-muted-foreground">Découvrez ce que mes clients pensent de notre collaboration.</p>
+        </div>
 
-      {/* Conteneur du carrousel */}
-      <div className="relative w-full overflow-hidden">
-        {/* Dégradés sur les côtés pour un effet de fondu */}
-        <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        {/* Le conteneur avec bordure en bas et lueur */}
+        <div className="relative w-full overflow-hidden pb-12">
+          
+          {/* LA LUEUR (Glow) - placée en bas et floutée */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-accent/20 blur-[60px] rounded-full pointer-events-none" />
 
-        {/* Piste de défilement animée */}
-        <motion.div 
-          className="flex gap-6 w-max"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ 
-            ease: "linear", 
-            duration: 40, // Vitesse de défilement
-            repeat: Infinity 
-          }}
-        >
-          {duplicatedTestimonials.map((testimonial, index) => (
-            <div 
-              key={`${testimonial.id}-${index}`} 
-              // Responsive : w-[300px] sur mobile, w-[450px] sur desktop
-              className="relative w-[300px] md:w-[450px] flex-shrink-0 p-6 md:p-8 bg-background border border-border rounded-2xl shadow-lg shadow-accent/5 flex flex-col"
-            >
-              <Quote className="absolute top-6 right-6 h-8 w-8 text-accent/20" />
-              
-              {/* Étoiles */}
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-accent text-accent" />
-                ))}
-              </div>
+          {/* LA BORDURE EN BAS */}
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
-              <p className="text-lg font-medium leading-relaxed mb-8 flex-1">
-                "{testimonial.content}"
-              </p>
-              
-              {/* Profil du client avec photo */}
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-xl overflow-hidden relative">
-                  {testimonial.avatar ? (
-                    <Image 
-                      src={testimonial.avatar} 
-                      alt={testimonial.name} 
-                      fill 
-                      className="object-cover" 
-                    />
-                  ) : (
-                    testimonial.name.charAt(0)
-                  )}
+          {/* Les fondus sur les côtés (pour le défilement) */}
+          <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+          {/* Piste de défilement */}
+          <motion.div 
+            className="flex gap-6 px-6"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ ease: "linear", duration: 30, repeat: Infinity }}
+          >
+            {duplicatedTestimonials.map((testimonial, index) => (
+              <div 
+                key={`${testimonial.id}-${index}`} 
+                className="relative w-[280px] md:w-[350px] flex-shrink-0 p-6 bg-muted/20 border border-border/50 rounded-2xl flex flex-col"
+              >
+                <Quote className="absolute top-4 right-4 h-6 w-6 text-accent/10" />
+                
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-3 w-3 fill-accent text-accent" />
+                  ))}
                 </div>
-                <div>
-                  <p className="font-bold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+
+                <p className="text-sm font-medium leading-relaxed mb-6 flex-1 line-clamp-4">
+                  "{testimonial.content}"
+                </p>
+                
+                <div className="flex items-center gap-3 mt-auto">
+                  <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold text-sm overflow-hidden relative">
+                    {testimonial.avatar ? (
+                      <Image src={testimonial.avatar} alt={testimonial.name} fill className="object-cover" />
+                    ) : (
+                      testimonial.name.charAt(0)
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">{testimonial.name}</p>
+                    <p className="text-xs text-muted-foreground">{testimonial.company}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
       </div>
     </section>
   );
