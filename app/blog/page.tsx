@@ -31,14 +31,22 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen">
-      {/* Hero du Blog avec dégradé et effet visuel */}
-      <div className="relative w-full py-24 md:py-32 flex items-center justify-center mb-16 overflow-hidden">
-        {/* Fond dégradé */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-accent/10" />
+         {/* Hero du Blog avec IMAGE DE FOND */}
+      <div className="relative w-full h-[40vh] min-h-[350px] flex items-center justify-center mb-16">
         
-        {/* Effet de lueur (glow) */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-accent/5 blur-[100px] rounded-full pointer-events-none" />
-
+        {/* 1. L'image de fond */}
+        <Image
+          src="/uploads/blog-hero.jpg" // <-- Assure-toi que le nom correspond
+          alt="Blog DevUp"
+          fill
+          className="object-cover"
+          priority
+        />
+        
+        {/* 2. L'overlay sombre (pour que le texte soit lisible) */}
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px]" />
+        
+        {/* 3. Le contenu (texte) */}
         <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
             Le Blog <span className="text-accent">DevUp</span>
