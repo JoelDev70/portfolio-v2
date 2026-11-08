@@ -222,6 +222,7 @@ export default function AdminPage() {
                 excerpt: formData.get("excerpt"),
                 content: formData.get("content"),
                 tags: formData.get("tags")?.toString().split(',').map(s => s.trim()),
+                coverImage: formData.get("coverImage"), 
                 published: true,
               };
 
@@ -262,7 +263,37 @@ export default function AdminPage() {
                 <label className="block text-sm mb-1">Contenu complet (Markdown supporté plus tard)</label>
                 <textarea name="content" required className="w-full p-2 bg-background border border-border rounded-md h-64" />
               </div>
+              <div>
+            <label className="block text-sm mb-1">Image de couverture</label>
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
 
+                const formData = new FormData();
+                formData.append("file", file);
+
+                try {
+                  const res = await fetch("/api/upload", { method: "POST", body: formData });
+                  const data = await res.json();
+                  
+                  if (data.url) {
+                    const inputUrl = document.createElement("input");
+                    inputUrl.type = "hidden";
+                    inputUrl.name = "coverImage";
+                    inputUrl.value = data.url;
+                    e.target.form?.appendChild(inputUrl);
+                    alert("Image uploadée avec succès !");
+                  }
+                } catch (err) {
+                  alert("Erreur upload");
+                }
+              }}
+              className="w-full p-2 bg-background border border-border rounded-md"
+            />
+          </div>
               <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
                 Publier l&apos;article
               </button>

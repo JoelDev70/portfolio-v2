@@ -25,6 +25,7 @@ export async function POST(request: Request) {
         excerpt: body.excerpt,
         content: body.content,
         tags: body.tags,
+        coverImage: body.coverImage,
         published: body.published,
       }
     });

@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import Image from "next/image";
+
 
 export default async function BlogPostPage({ 
   params 
@@ -43,15 +46,25 @@ export default async function BlogPostPage({
             {post.createdAt.toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" /> 5 min de lecture
+            <Clock className="h-4 w-4" /> 
           </span>
         </div>
       </header>
+          {/* Image de couverture */}
+      {post.coverImage && (
+        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-12 border border-border">
+          <Image 
+            src={post.coverImage} 
+            alt={post.title} 
+            fill 
+            className="object-cover" 
+          />
+        </div>
+      )}
 
-      {/* Contenu de l'article */}
-      <div className="prose prose-invert prose-lg max-w-none text-muted-foreground">
-        {/* On affiche le texte brut pour l'instant. On ajoutera le Markdown plus tard. */}
-        <p className="whitespace-pre-wrap">{post.content}</p>
+      {/* Contenu de l'article avec rendu Markdown */}
+      <div className="prose prose-invert prose-lg max-w-none prose-headings:text-foreground prose-a:text-accent hover:prose-a:text-accent/80 prose-code:text-accent prose-pre:bg-muted/50">
+        <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
     </main>
   );
