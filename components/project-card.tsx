@@ -3,7 +3,6 @@ import { ArrowUpRight } from "lucide-react";
 import { BrowserMockup } from "./browser-mockup";
 import { SpotlightCard } from "./spotlight-card";
 
-
 interface ProjectCardProps {
   title: string;
   description: string;
@@ -14,8 +13,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ title, description, tags, link, coverImage }: ProjectCardProps) {
   return (
-    // <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-background transition-all hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5">
-      <SpotlightCard className="group transition-all hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5">
+    <SpotlightCard className="group flex flex-col transition-all hover:border-accent/50">
       {/* Image ou Fallback stylé */}
       <div className="relative w-full p-4 pb-0">
         {coverImage ? (
@@ -59,7 +57,6 @@ export function ProjectCard({ title, description, tags, link, coverImage }: Proj
           ))}
         </div>
       </div>
-      </SpotlightCard>
-
+    </SpotlightCard>
   );
 }

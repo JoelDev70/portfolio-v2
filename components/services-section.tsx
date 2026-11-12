@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MonitorSmartphone, ShieldCheck, Rocket } from "lucide-react";
+import { SpotlightCard } from "./spotlight-card";
 
 const services = [
   {
@@ -31,21 +32,22 @@ export function ServicesSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {services.map((service, index) => (
-           <motion.div
+          <motion.div
             key={service.title}
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }} // Déclenche un peu avant que ça rentre à l'écran
-            transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-            className="..."
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.15 }}
           >
-            <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <service.icon className="h-6 w-6 text-accent" />
-            </div>
-            <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {service.description}
-            </p>
+            <SpotlightCard className="h-full p-6 group transition-colors">
+              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <service.icon className="h-6 w-6 text-accent" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {service.description}
+              </p>
+            </SpotlightCard>
           </motion.div>
         ))}
       </div>

@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { Footer } from "@/components/footer";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -60,6 +62,7 @@ export default function RootLayout({
           <main className="pt-16 min-h-screen">
             {children}
           </main>
+          <Footer /> 
         </ThemeProvider>
       </body>
     </html>

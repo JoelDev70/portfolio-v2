@@ -5,7 +5,6 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function SpotlightCard({ children, className = "" }: { children: React.ReactNode, className?: string }) {
   const divRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const opacity = useMotionValue(0);
 
@@ -15,8 +14,6 @@ export function SpotlightCard({ children, className = "" }: { children: React.Re
     setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
   const handleMouseEnter = () => opacity.set(1);
   const handleMouseLeave = () => opacity.set(0);
 
@@ -30,8 +27,6 @@ export function SpotlightCard({ children, className = "" }: { children: React.Re
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       className={`relative overflow-hidden rounded-xl border border-border bg-background ${className}`}
     >
       {/* La lumière qui suit la souris */}
