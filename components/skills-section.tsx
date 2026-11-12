@@ -79,13 +79,13 @@ export function SkillsSection() {
                     <span className="text-muted-foreground">{skill.level}%</span>
                   </div>
                   <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: index * 0.1, ease: "easeOut" }}
-                      className="h-full bg-accent rounded-full"
-                    />
+                   <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${skill.level}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: index * 0.1, ease: "easeOut" }}
+                    className="h-full bg-accent rounded-full"
+                  />
                   </div>
                 </div>
               ))}

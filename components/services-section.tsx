@@ -31,13 +31,13 @@ export function ServicesSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {services.map((service, index) => (
-          <motion.div
+           <motion.div
             key={service.title}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.15 }}
-            className="p-6 bg-muted/10 border border-border rounded-2xl hover:border-accent/50 transition-colors group"
+            viewport={{ once: true, margin: "-100px" }} // Déclenche un peu avant que ça rentre à l'écran
+            transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+            className="..."
           >
             <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <service.icon className="h-6 w-6 text-accent" />

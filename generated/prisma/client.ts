@@ -61,3 +61,13 @@ export type Message = Prisma.MessageModel
  * 
  */
 export type Subscriber = Prisma.SubscriberModel
+/**
+ * Model Testimonial
+ * 
+ */
+export type Testimonial = Prisma.TestimonialModel
+/**
+ * Model Comment
+ * 
+ */
+export type Comment = Prisma.CommentModel

@@ -76,9 +76,9 @@ export default async function BlogPostPage({
           </span>
         </div>
       </header>
-          {/* Image de couverture */}
+           {/* Image de couverture */}
       {post.coverImage && (
-        <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-12 border border-border">
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-12 border border-border shadow-lg">
           <Image 
             src={post.coverImage} 
             alt={post.title} 
@@ -90,8 +90,8 @@ export default async function BlogPostPage({
 
       {/* Contenu de l'article avec rendu Markdown */}
      
-      <div className="prose prose-invert prose-lg max-w-none prose-headings:text-foreground prose-a:text-accent hover:prose-a:text-accent/80 prose-code:text-accent prose-pre:bg-muted/50">
-        <ReactMarkdown>{post.content}</ReactMarkdown>
+
+<div className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-foreground prose-headings:font-bold prose-a:text-accent hover:prose-a:text-accent/80 prose-code:text-accent prose-pre:bg-muted/50 prose-p:text-muted-foreground">        <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
 
       {/* Ajout de la section commentaires */}

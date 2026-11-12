@@ -54,7 +54,9 @@ export const ModelName = {
   Project: 'Project',
   Post: 'Post',
   Message: 'Message',
-  Subscriber: 'Subscriber'
+  Subscriber: 'Subscriber',
+  Testimonial: 'Testimonial',
+  Comment: 'Comment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -139,6 +141,32 @@ export const SubscriberScalarFieldEnum = {
 } as const
 
 export type SubscriberScalarFieldEnum = (typeof SubscriberScalarFieldEnum)[keyof typeof SubscriberScalarFieldEnum]
+
+
+export const TestimonialScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  company: 'company',
+  content: 'content',
+  avatar: 'avatar',
+  createdAt: 'createdAt'
+} as const
+
+export type TestimonialScalarFieldEnum = (typeof TestimonialScalarFieldEnum)[keyof typeof TestimonialScalarFieldEnum]
+
+
+export const CommentScalarFieldEnum = {
+  id: 'id',
+  author: 'author',
+  email: 'email',
+  content: 'content',
+  approved: 'approved',
+  postId: 'postId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
 
 
 export const SortOrder = {
