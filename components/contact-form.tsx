@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { motion } from "framer-motion";
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -31,7 +30,7 @@ export function ContactForm() {
       if (res.ok) {
         setStatus("success");
         form.reset();
-        setTimeout(() => setStatus("idle"), 5000); // Réinitialise après 5s
+        setTimeout(() => setStatus("idle"), 5000);
       } else {
         setStatus("error");
       }
@@ -41,79 +40,78 @@ export function ContactForm() {
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="w-full max-w-2xl mx-auto p-8 bg-muted/10 border border-border rounded-2xl"
-    >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">Nom complet</label>
-            <input 
-              name="name" 
-              required 
-              placeholder="Votre nom"
-              className="w-full p-3 bg-background border border-border rounded-lg focus:outline-none focus:border-accent transition-colors" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
-            <input 
-              name="email" 
-              type="email" 
-              required 
-              placeholder="vous@exemple.com"
-              className="w-full p-3 bg-background border border-border rounded-lg focus:outline-none focus:border-accent transition-colors" 
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">Sujet</label>
+    <form onSubmit={handleSubmit} className="space-y-10">
+      
+      {/* Ligne 1 : Nom et Email */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="relative group">
+          <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">Nom</label>
           <input 
-            name="subject" 
+            name="name" 
             required 
-            placeholder="Proposition de mission, question, etc."
-            className="w-full p-3 bg-background border border-border rounded-lg focus:outline-none focus:border-accent transition-colors" 
+            placeholder="Votre nom" 
+            className="w-full bg-transparent border-b border-border py-3 text-lg focus:outline-none focus:border-accent transition-colors placeholder:text-muted-foreground/30" 
           />
         </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2">Message</label>
-          <textarea 
-            name="message" 
+        <div className="relative group">
+          <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">Email</label>
+          <input 
+            name="email" 
+            type="email" 
             required 
-            placeholder="Décrivez votre projet ou votre besoin..."
-            className="w-full p-3 bg-background border border-border rounded-lg focus:outline-none focus:border-accent transition-colors h-32 resize-none" 
+            placeholder="vous@exemple.com" 
+            className="w-full bg-transparent border-b border-border py-3 text-lg focus:outline-none focus:border-accent transition-colors placeholder:text-muted-foreground/30" 
           />
         </div>
+      </div>
 
-        <button 
-          type="submit" 
-          disabled={status === "loading"}
-          className="w-full py-4 bg-accent text-accent-foreground font-bold rounded-lg hover:bg-accent/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-        >
-          {status === "loading" ? "Envoi en cours..." : "Envoyer le message"}
-          {status !== "loading" && <Send className="h-4 w-4" />}
-        </button>
+      {/* Ligne 2 : Sujet */}
+      <div className="relative group">
+        <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">Sujet</label>
+        <input 
+          name="subject" 
+          required 
+          placeholder="Quel est votre projet ?" 
+          className="w-full bg-transparent border-b border-border py-3 text-lg focus:outline-none focus:border-accent transition-colors placeholder:text-muted-foreground/30" 
+        />
+      </div>
 
-        {/* Messages de statut */}
-        {status === "success" && (
-          <div className="flex items-center gap-2 text-green-500 bg-green-500/10 p-3 rounded-lg">
-            <CheckCircle2 className="h-5 w-5" />
-            <p className="text-sm font-medium">Message envoyé avec succès ! Je vous répondrai rapidement.</p>
-          </div>
-        )}
-        {status === "error" && (
-          <div className="flex items-center gap-2 text-red-500 bg-red-500/10 p-3 rounded-lg">
-            <AlertCircle className="h-5 w-5" />
-            <p className="text-sm font-medium">Une erreur est survenue. Veuillez réessayer.</p>
-          </div>
-        )}
-      </form>
-    </motion.div>
+      {/* Ligne 3 : Message */}
+      <div className="relative group">
+        <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 block">Message</label>
+        <textarea 
+          name="message" 
+          required 
+          placeholder="Décrivez votre besoin en quelques mots..." 
+          className="w-full bg-transparent border-b border-border py-3 text-lg focus:outline-none focus:border-accent transition-colors placeholder:text-muted-foreground/30 h-32 resize-none" 
+        />
+      </div>
+
+      {/* Bouton d'envoi */}
+      <button 
+        type="submit" 
+        disabled={status === "loading"}
+        className="group flex items-center gap-4 text-lg font-bold uppercase tracking-wider text-foreground hover:text-accent transition-colors disabled:opacity-50"
+      >
+        <span className="p-4 bg-accent text-accent-foreground rounded-full group-hover:scale-110 transition-transform">
+          <Send className="h-5 w-5" />
+        </span>
+        {status === "loading" ? "Envoi en cours..." : "Envoyer le message"}
+      </button>
+
+      {/* Messages de statut */}
+      {status === "success" && (
+        <div className="flex items-center gap-2 text-green-500">
+          <CheckCircle2 className="h-5 w-5" />
+          <p className="text-sm font-medium">Message envoyé avec succès ! Je vous répondrai rapidement.</p>
+        </div>
+      )}
+      {status === "error" && (
+        <div className="flex items-center gap-2 text-red-500">
+          <AlertCircle className="h-5 w-5" />
+          <p className="text-sm font-medium">Une erreur est survenue. Veuillez réessayer.</p>
+        </div>
+      )}
+    </form>
   );
 }
