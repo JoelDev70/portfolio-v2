@@ -88,13 +88,16 @@ model Subscriber {
   email     String   @unique
   createdAt DateTime @default(now())
 }
+
+
 model Testimonial {
   id        String   @id @default(cuid())
   name      String
-  role      String
   company   String
+  role      String
   content   String   @db.Text
-  avatar    String?  // URL de la photo
+  avatar    String?
+  rating    Int      @default(5) 
   createdAt DateTime @default(now())
 }
 

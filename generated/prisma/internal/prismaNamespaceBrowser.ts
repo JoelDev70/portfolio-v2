@@ -146,10 +146,11 @@ export type SubscriberScalarFieldEnum = (typeof SubscriberScalarFieldEnum)[keyof
 export const TestimonialScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  role: 'role',
   company: 'company',
+  role: 'role',
   content: 'content',
   avatar: 'avatar',
+  rating: 'rating',
   createdAt: 'createdAt'
 } as const
 

@@ -60,7 +60,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             <span className="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium border border-accent/20">
-              📍 Kinshasa, RDC
+              📍 Beni, RDC
             </span>
             <span className="px-4 py-2 bg-muted text-muted-foreground rounded-full text-sm font-medium border border-border">
               🎓 Licence en Génie Informatique
@@ -91,7 +91,7 @@ export default function AboutPage() {
             <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 bg-muted/10 border border-border rounded-2xl hover:border-accent/30 transition-colors">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-lg">Développeur Freelance</h3>
-                <span className="text-sm text-accent font-medium">2024 - Aujourd'hui</span>
+                <span className="text-sm text-accent font-medium">2025 - Aujourd'hui</span>
               </div>
               <p className="text-muted-foreground text-sm">
                 Conception et développement d'applications web sur mesure pour des clients locaux et internationaux. 
@@ -114,7 +114,7 @@ export default function AboutPage() {
             <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 bg-muted/10 border border-border rounded-2xl hover:border-accent/30 transition-colors">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-bold text-lg">Projet AMICONGO Export</h3>
-                <span className="text-sm text-accent font-medium">2023 - 2024</span>
+                <span className="text-sm text-accent font-medium">2025 - 2026</span>
               </div>
               <p className="text-muted-foreground text-sm">
                 Développement d'une plateforme d'exportation complète. Plus de 10 000 lignes de code, 

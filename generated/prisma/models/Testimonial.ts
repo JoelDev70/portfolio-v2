@@ -20,69 +20,93 @@ export type TestimonialModel = runtime.Types.Result.DefaultSelection<Prisma.$Tes
 
 export type AggregateTestimonial = {
   _count: TestimonialCountAggregateOutputType | null
+  _avg: TestimonialAvgAggregateOutputType | null
+  _sum: TestimonialSumAggregateOutputType | null
   _min: TestimonialMinAggregateOutputType | null
   _max: TestimonialMaxAggregateOutputType | null
+}
+
+export type TestimonialAvgAggregateOutputType = {
+  rating: number | null
+}
+
+export type TestimonialSumAggregateOutputType = {
+  rating: number | null
 }
 
 export type TestimonialMinAggregateOutputType = {
   id: string | null
   name: string | null
-  role: string | null
   company: string | null
+  role: string | null
   content: string | null
   avatar: string | null
+  rating: number | null
   createdAt: Date | null
 }
 
 export type TestimonialMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  role: string | null
   company: string | null
+  role: string | null
   content: string | null
   avatar: string | null
+  rating: number | null
   createdAt: Date | null
 }
 
 export type TestimonialCountAggregateOutputType = {
   id: number
   name: number
-  role: number
   company: number
+  role: number
   content: number
   avatar: number
+  rating: number
   createdAt: number
   _all: number
 }
 
 
+export type TestimonialAvgAggregateInputType = {
+  rating?: true
+}
+
+export type TestimonialSumAggregateInputType = {
+  rating?: true
+}
+
 export type TestimonialMinAggregateInputType = {
   id?: true
   name?: true
-  role?: true
   company?: true
+  role?: true
   content?: true
   avatar?: true
+  rating?: true
   createdAt?: true
 }
 
 export type TestimonialMaxAggregateInputType = {
   id?: true
   name?: true
-  role?: true
   company?: true
+  role?: true
   content?: true
   avatar?: true
+  rating?: true
   createdAt?: true
 }
 
 export type TestimonialCountAggregateInputType = {
   id?: true
   name?: true
-  role?: true
   company?: true
+  role?: true
   content?: true
   avatar?: true
+  rating?: true
   createdAt?: true
   _all?: true
 }
@@ -125,6 +149,18 @@ export type TestimonialAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: TestimonialAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: TestimonialSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: TestimonialMinAggregateInputType
@@ -155,6 +191,8 @@ export type TestimonialGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: TestimonialCountAggregateInputType | true
+  _avg?: TestimonialAvgAggregateInputType
+  _sum?: TestimonialSumAggregateInputType
   _min?: TestimonialMinAggregateInputType
   _max?: TestimonialMaxAggregateInputType
 }
@@ -162,12 +200,15 @@ export type TestimonialGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type TestimonialGroupByOutputType = {
   id: string
   name: string
-  role: string
   company: string
+  role: string
   content: string
   avatar: string | null
+  rating: number
   createdAt: Date
   _count: TestimonialCountAggregateOutputType | null
+  _avg: TestimonialAvgAggregateOutputType | null
+  _sum: TestimonialSumAggregateOutputType | null
   _min: TestimonialMinAggregateOutputType | null
   _max: TestimonialMaxAggregateOutputType | null
 }
@@ -193,20 +234,22 @@ export type TestimonialWhereInput = {
   NOT?: Prisma.TestimonialWhereInput | Prisma.TestimonialWhereInput[]
   id?: Prisma.StringFilter<"Testimonial"> | string
   name?: Prisma.StringFilter<"Testimonial"> | string
-  role?: Prisma.StringFilter<"Testimonial"> | string
   company?: Prisma.StringFilter<"Testimonial"> | string
+  role?: Prisma.StringFilter<"Testimonial"> | string
   content?: Prisma.StringFilter<"Testimonial"> | string
   avatar?: Prisma.StringNullableFilter<"Testimonial"> | string | null
+  rating?: Prisma.IntFilter<"Testimonial"> | number
   createdAt?: Prisma.DateTimeFilter<"Testimonial"> | Date | string
 }
 
 export type TestimonialOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   company?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   content?: Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
+  rating?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -216,24 +259,28 @@ export type TestimonialWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.TestimonialWhereInput[]
   NOT?: Prisma.TestimonialWhereInput | Prisma.TestimonialWhereInput[]
   name?: Prisma.StringFilter<"Testimonial"> | string
-  role?: Prisma.StringFilter<"Testimonial"> | string
   company?: Prisma.StringFilter<"Testimonial"> | string
+  role?: Prisma.StringFilter<"Testimonial"> | string
   content?: Prisma.StringFilter<"Testimonial"> | string
   avatar?: Prisma.StringNullableFilter<"Testimonial"> | string | null
+  rating?: Prisma.IntFilter<"Testimonial"> | number
   createdAt?: Prisma.DateTimeFilter<"Testimonial"> | Date | string
 }, "id">
 
 export type TestimonialOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   company?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   content?: Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
+  rating?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.TestimonialCountOrderByAggregateInput
+  _avg?: Prisma.TestimonialAvgOrderByAggregateInput
   _max?: Prisma.TestimonialMaxOrderByAggregateInput
   _min?: Prisma.TestimonialMinOrderByAggregateInput
+  _sum?: Prisma.TestimonialSumOrderByAggregateInput
 }
 
 export type TestimonialScalarWhereWithAggregatesInput = {
@@ -242,111 +289,130 @@ export type TestimonialScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TestimonialScalarWhereWithAggregatesInput | Prisma.TestimonialScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Testimonial"> | string
   name?: Prisma.StringWithAggregatesFilter<"Testimonial"> | string
-  role?: Prisma.StringWithAggregatesFilter<"Testimonial"> | string
   company?: Prisma.StringWithAggregatesFilter<"Testimonial"> | string
+  role?: Prisma.StringWithAggregatesFilter<"Testimonial"> | string
   content?: Prisma.StringWithAggregatesFilter<"Testimonial"> | string
   avatar?: Prisma.StringNullableWithAggregatesFilter<"Testimonial"> | string | null
+  rating?: Prisma.IntWithAggregatesFilter<"Testimonial"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Testimonial"> | Date | string
 }
 
 export type TestimonialCreateInput = {
   id?: string
   name: string
-  role: string
   company: string
+  role: string
   content: string
   avatar?: string | null
+  rating?: number
   createdAt?: Date | string
 }
 
 export type TestimonialUncheckedCreateInput = {
   id?: string
   name: string
-  role: string
   company: string
+  role: string
   content: string
   avatar?: string | null
+  rating?: number
   createdAt?: Date | string
 }
 
 export type TestimonialUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TestimonialUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TestimonialCreateManyInput = {
   id?: string
   name: string
-  role: string
   company: string
+  role: string
   content: string
   avatar?: string | null
+  rating?: number
   createdAt?: Date | string
 }
 
 export type TestimonialUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TestimonialUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.StringFieldUpdateOperationsInput | string
   company?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TestimonialCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   company?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   content?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
+  rating?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type TestimonialAvgOrderByAggregateInput = {
+  rating?: Prisma.SortOrder
 }
 
 export type TestimonialMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   company?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   content?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
+  rating?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TestimonialMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   company?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   content?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
+  rating?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type TestimonialSumOrderByAggregateInput = {
+  rating?: Prisma.SortOrder
 }
 
 
@@ -354,44 +420,48 @@ export type TestimonialMinOrderByAggregateInput = {
 export type TestimonialSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  role?: boolean
   company?: boolean
+  role?: boolean
   content?: boolean
   avatar?: boolean
+  rating?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["testimonial"]>
 
 export type TestimonialSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  role?: boolean
   company?: boolean
+  role?: boolean
   content?: boolean
   avatar?: boolean
+  rating?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["testimonial"]>
 
 export type TestimonialSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  role?: boolean
   company?: boolean
+  role?: boolean
   content?: boolean
   avatar?: boolean
+  rating?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["testimonial"]>
 
 export type TestimonialSelectScalar = {
   id?: boolean
   name?: boolean
-  role?: boolean
   company?: boolean
+  role?: boolean
   content?: boolean
   avatar?: boolean
+  rating?: boolean
   createdAt?: boolean
 }
 
-export type TestimonialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "role" | "company" | "content" | "avatar" | "createdAt", ExtArgs["result"]["testimonial"]>
+export type TestimonialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "company" | "role" | "content" | "avatar" | "rating" | "createdAt", ExtArgs["result"]["testimonial"]>
 
 export type $TestimonialPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Testimonial"
@@ -399,10 +469,11 @@ export type $TestimonialPayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    role: string
     company: string
+    role: string
     content: string
     avatar: string | null
+    rating: number
     createdAt: Date
   }, ExtArgs["result"]["testimonial"]>
   composites: {}
@@ -829,10 +900,11 @@ export interface Prisma__TestimonialClient<T, Null = never, ExtArgs extends runt
 export interface TestimonialFieldRefs {
   readonly id: Prisma.FieldRef<"Testimonial", 'String'>
   readonly name: Prisma.FieldRef<"Testimonial", 'String'>
-  readonly role: Prisma.FieldRef<"Testimonial", 'String'>
   readonly company: Prisma.FieldRef<"Testimonial", 'String'>
+  readonly role: Prisma.FieldRef<"Testimonial", 'String'>
   readonly content: Prisma.FieldRef<"Testimonial", 'String'>
   readonly avatar: Prisma.FieldRef<"Testimonial", 'String'>
+  readonly rating: Prisma.FieldRef<"Testimonial", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Testimonial", 'DateTime'>
 }
     

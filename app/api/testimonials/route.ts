@@ -15,13 +15,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const testimonial = await prisma.testimonial.create({
+        const testimonial = await prisma.testimonial.create({
       data: {
         name: body.name,
         role: body.role,
         company: body.company,
         content: body.content,
         avatar: body.avatar,
+        rating: parseInt(body.rating) || 5, // <-- AJOUTÉ
       }
     });
     return NextResponse.json(testimonial, { status: 201 });

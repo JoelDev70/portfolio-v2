@@ -3,7 +3,6 @@ import { ArrowLeft, ExternalLink, Code } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
 
 // ... (tes autres imports)
 

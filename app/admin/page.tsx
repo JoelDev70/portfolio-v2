@@ -330,6 +330,16 @@ export default function AdminPage() {
                 <input name="role" required className="w-full p-2 bg-background border border-border rounded-md" />
               </div>
               <div>
+              <label className="block text-sm mb-1">Note (sur 5)</label>
+              <select name="rating" className="w-full p-2 bg-background border border-border rounded-md">
+                <option value="5">5 étoiles (Excellent)</option>
+                <option value="4">4 étoiles (Très bien)</option>
+                <option value="3">3 étoiles (Bien)</option>
+                <option value="2">2 étoiles (Moyen)</option>
+                <option value="1">1 étoile (Décevant)</option>
+              </select>
+            </div>
+              <div>
                 <label className="block text-sm mb-1">Photo de profil</label>
                 <input 
                   type="file" 

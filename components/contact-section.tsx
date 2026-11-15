@@ -2,7 +2,7 @@
 
 import { ContactForm } from "./contact-form";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 import Image from "next/image";
 import { motion } from "framer-motion"; // <-- Import de motion
 
@@ -46,7 +46,7 @@ export function ContactSection() {
                 <div className="space-y-4 text-sm text-muted-foreground">
                   <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-accent shrink-0" />
-                    <p>Kinshasa, RDC<br/><span className="text-xs opacity-70">Disponible en remote</span></p>
+                    <p>Beni, RDC<br/><span className="text-xs opacity-70">Disponible en remote</span></p>
                   </div>
 
                   <div className="flex items-center gap-3">
@@ -70,8 +70,8 @@ export function ContactSection() {
                 <a href="https://linkedin.com/in/joel-vutsumbwa" target="_blank" rel="noreferrer" className="text-accent hover:text-accent/80 transition-colors">
                   <FaLinkedin className="h-5 w-5" />
                 </a>
-                <a href="https://github.com/JoelDev70" target="_blank" rel="noreferrer" className="text-accent hover:text-accent/80 transition-colors">
-                  <FaGithub className="h-5 w-5" />
+                <a href="https://instagram.com/" target="_blank" rel="noreferrer" className="text-accent hover:text-accent/80 transition-colors">
+                  <FaInstagram className="h-5 w-5" />
                 </a>
                 <div className="w-px h-8 bg-accent/20" />
                 <div className="text-[10px] font-bold text-accent uppercase tracking-wider rotate-180" style={{ writingMode: 'vertical-rl' }}>

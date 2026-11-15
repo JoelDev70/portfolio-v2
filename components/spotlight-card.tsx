@@ -27,14 +27,20 @@ export function SpotlightCard({ children, className = "" }: { children: React.Re
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden rounded-xl border border-border bg-background ${className}`}
+      // On retire la bordure grise unie pour la remplacer par un dégradé
+      className={`relative overflow-hidden rounded-3xl bg-background ${className}`}
     >
+      {/* Bordure dégradée (effet de lumière sur le contour) */}
+      <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-br from-accent/30 via-border/20 to-transparent pointer-events-none">
+        <div className="h-full w-full rounded-3xl bg-background" />
+      </div>
+
       {/* La lumière qui suit la souris */}
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-0"
         style={{
           opacity,
-          background: `radial-gradient(600px circle at ${x}px ${y}px, rgba(6, 182, 212, 0.15), transparent 40%)`,
+          background: `radial-gradient(600px circle at ${x}px ${y}px, rgba(6, 182, 212, 0.1), transparent 40%)`,
         }}
       />
       
@@ -45,3 +51,53 @@ export function SpotlightCard({ children, className = "" }: { children: React.Re
     </motion.div>
   );
 }
+
+
+
+// "use client";
+
+// import { useRef, useState } from "react";
+// import { motion, useMotionValue, useSpring } from "framer-motion";
+
+// export function SpotlightCard({ children, className = "" }: { children: React.ReactNode, className?: string }) {
+//   const divRef = useRef<HTMLDivElement>(null);
+//   const [position, setPosition] = useState({ x: 0, y: 0 });
+//   const opacity = useMotionValue(0);
+
+//   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+//     if (!divRef.current) return;
+//     const rect = divRef.current.getBoundingClientRect();
+//     setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+//   };
+
+//   const handleMouseEnter = () => opacity.set(1);
+//   const handleMouseLeave = () => opacity.set(0);
+
+//   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+//   const x = useSpring(position.x, springConfig);
+//   const y = useSpring(position.y, springConfig);
+
+//   return (
+//     <motion.div
+//       ref={divRef}
+//       onMouseMove={handleMouseMove}
+//       onMouseEnter={handleMouseEnter}
+//       onMouseLeave={handleMouseLeave}
+//       className={`relative overflow-hidden rounded-xl border border-border bg-background ${className}`}
+//     >
+//       {/* La lumière qui suit la souris */}
+//       <motion.div
+//         className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-0"
+//         style={{
+//           opacity,
+//           background: `radial-gradient(600px circle at ${x}px ${y}px, rgba(6, 182, 212, 0.15), transparent 40%)`,
+//         }}
+//       />
+      
+//       {/* Le contenu de la carte */}
+//       <div className="relative z-10 h-full">
+//         {children}
+//       </div>
+//     </motion.div>
+//   );
+// }

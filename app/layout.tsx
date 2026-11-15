@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { Footer } from "@/components/footer";
+import { FloatingCTA } from "@/components/floating-cta";
 
 
 
@@ -58,6 +59,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ScrollProgress /> 
+          <FloatingCTA /> 
           <Navbar />
           <main className="pt-16 min-h-screen">
             {children}
