@@ -107,7 +107,19 @@ export default function AdminPage() {
               alert("Erreur réseau");
             }
           }}>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm mb-1">Titre du projet</label>
+                <input name="title" required className="w-full p-2 bg-background border border-border rounded-md" />
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Catégorie (ex: Application Web)</label>
+                <input name="category" placeholder="Application Web" className="w-full p-2 bg-background border border-border rounded-md" />
+              </div>
+            </div>
+
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm mb-1">Titre du projet</label>
                 <input name="title" required className="w-full p-2 bg-background border border-border rounded-md" />
@@ -116,7 +128,8 @@ export default function AdminPage() {
                 <label className="block text-sm mb-1">Stack technique (séparée par des virgules)</label>
                 <input name="techStack" placeholder="Next.js, Django, PostgreSQL" className="w-full p-2 bg-background border border-border rounded-md" />
               </div>
-            </div>
+            </div> */}
+
             
             <div>
               <label className="block text-sm mb-1">Description courte</label>

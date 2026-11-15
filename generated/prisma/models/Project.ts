@@ -42,6 +42,7 @@ export type ProjectMinAggregateOutputType = {
   title: string | null
   subtitle: string | null
   description: string | null
+  category: string | null
   context: string | null
   problem: string | null
   solution: string | null
@@ -66,6 +67,7 @@ export type ProjectMaxAggregateOutputType = {
   title: string | null
   subtitle: string | null
   description: string | null
+  category: string | null
   context: string | null
   problem: string | null
   solution: string | null
@@ -90,6 +92,7 @@ export type ProjectCountAggregateOutputType = {
   title: number
   subtitle: number
   description: number
+  category: number
   context: number
   problem: number
   solution: number
@@ -128,6 +131,7 @@ export type ProjectMinAggregateInputType = {
   title?: true
   subtitle?: true
   description?: true
+  category?: true
   context?: true
   problem?: true
   solution?: true
@@ -152,6 +156,7 @@ export type ProjectMaxAggregateInputType = {
   title?: true
   subtitle?: true
   description?: true
+  category?: true
   context?: true
   problem?: true
   solution?: true
@@ -176,6 +181,7 @@ export type ProjectCountAggregateInputType = {
   title?: true
   subtitle?: true
   description?: true
+  category?: true
   context?: true
   problem?: true
   solution?: true
@@ -289,6 +295,7 @@ export type ProjectGroupByOutputType = {
   title: string
   subtitle: string | null
   description: string
+  category: string | null
   context: string | null
   problem: string | null
   solution: string | null
@@ -338,6 +345,7 @@ export type ProjectWhereInput = {
   title?: Prisma.StringFilter<"Project"> | string
   subtitle?: Prisma.StringNullableFilter<"Project"> | string | null
   description?: Prisma.StringFilter<"Project"> | string
+  category?: Prisma.StringNullableFilter<"Project"> | string | null
   context?: Prisma.StringNullableFilter<"Project"> | string | null
   problem?: Prisma.StringNullableFilter<"Project"> | string | null
   solution?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -364,6 +372,7 @@ export type ProjectOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   subtitle?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
   context?: Prisma.SortOrderInput | Prisma.SortOrder
   problem?: Prisma.SortOrderInput | Prisma.SortOrder
   solution?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -393,6 +402,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Project"> | string
   subtitle?: Prisma.StringNullableFilter<"Project"> | string | null
   description?: Prisma.StringFilter<"Project"> | string
+  category?: Prisma.StringNullableFilter<"Project"> | string | null
   context?: Prisma.StringNullableFilter<"Project"> | string | null
   problem?: Prisma.StringNullableFilter<"Project"> | string | null
   solution?: Prisma.StringNullableFilter<"Project"> | string | null
@@ -419,6 +429,7 @@ export type ProjectOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   subtitle?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
   context?: Prisma.SortOrderInput | Prisma.SortOrder
   problem?: Prisma.SortOrderInput | Prisma.SortOrder
   solution?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -453,6 +464,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Project"> | string
   subtitle?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   description?: Prisma.StringWithAggregatesFilter<"Project"> | string
+  category?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   context?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   problem?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
   solution?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
@@ -479,6 +491,7 @@ export type ProjectCreateInput = {
   title: string
   subtitle?: string | null
   description: string
+  category?: string | null
   context?: string | null
   problem?: string | null
   solution?: string | null
@@ -505,6 +518,7 @@ export type ProjectUncheckedCreateInput = {
   title: string
   subtitle?: string | null
   description: string
+  category?: string | null
   context?: string | null
   problem?: string | null
   solution?: string | null
@@ -531,6 +545,7 @@ export type ProjectUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   problem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -557,6 +572,7 @@ export type ProjectUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   problem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -583,6 +599,7 @@ export type ProjectCreateManyInput = {
   title: string
   subtitle?: string | null
   description: string
+  category?: string | null
   context?: string | null
   problem?: string | null
   solution?: string | null
@@ -609,6 +626,7 @@ export type ProjectUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   problem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -635,6 +653,7 @@ export type ProjectUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   subtitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   problem?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   solution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -669,6 +688,7 @@ export type ProjectCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   subtitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   context?: Prisma.SortOrder
   problem?: Prisma.SortOrder
   solution?: Prisma.SortOrder
@@ -700,6 +720,7 @@ export type ProjectMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   subtitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   context?: Prisma.SortOrder
   problem?: Prisma.SortOrder
   solution?: Prisma.SortOrder
@@ -724,6 +745,7 @@ export type ProjectMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   subtitle?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   context?: Prisma.SortOrder
   problem?: Prisma.SortOrder
   solution?: Prisma.SortOrder
@@ -805,6 +827,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   title?: boolean
   subtitle?: boolean
   description?: boolean
+  category?: boolean
   context?: boolean
   problem?: boolean
   solution?: boolean
@@ -831,6 +854,7 @@ export type ProjectSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   title?: boolean
   subtitle?: boolean
   description?: boolean
+  category?: boolean
   context?: boolean
   problem?: boolean
   solution?: boolean
@@ -857,6 +881,7 @@ export type ProjectSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   title?: boolean
   subtitle?: boolean
   description?: boolean
+  category?: boolean
   context?: boolean
   problem?: boolean
   solution?: boolean
@@ -883,6 +908,7 @@ export type ProjectSelectScalar = {
   title?: boolean
   subtitle?: boolean
   description?: boolean
+  category?: boolean
   context?: boolean
   problem?: boolean
   solution?: boolean
@@ -903,7 +929,7 @@ export type ProjectSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "subtitle" | "description" | "context" | "problem" | "solution" | "results" | "coverImage" | "images" | "techStack" | "client" | "role" | "year" | "duration" | "published" | "featured" | "order" | "liveUrl" | "repoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+export type ProjectOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "subtitle" | "description" | "category" | "context" | "problem" | "solution" | "results" | "coverImage" | "images" | "techStack" | "client" | "role" | "year" | "duration" | "published" | "featured" | "order" | "liveUrl" | "repoUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
 
 export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Project"
@@ -914,6 +940,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     title: string
     subtitle: string | null
     description: string
+    category: string | null
     context: string | null
     problem: string | null
     solution: string | null
@@ -1360,6 +1387,7 @@ export interface ProjectFieldRefs {
   readonly title: Prisma.FieldRef<"Project", 'String'>
   readonly subtitle: Prisma.FieldRef<"Project", 'String'>
   readonly description: Prisma.FieldRef<"Project", 'String'>
+  readonly category: Prisma.FieldRef<"Project", 'String'>
   readonly context: Prisma.FieldRef<"Project", 'String'>
   readonly problem: Prisma.FieldRef<"Project", 'String'>
   readonly solution: Prisma.FieldRef<"Project", 'String'>

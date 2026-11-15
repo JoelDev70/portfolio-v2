@@ -18,6 +18,7 @@ model Project {
   description String    @db.Text
   
   // Case study
+  category    String?   
   context     String?   @db.Text
   problem     String?   @db.Text
   solution    String?   @db.Text

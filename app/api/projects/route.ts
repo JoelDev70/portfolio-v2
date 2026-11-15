@@ -27,6 +27,7 @@ export async function POST(request: Request) {
         techStack: body.techStack,
         liveUrl: body.liveUrl, 
         repoUrl: body.repoUrl, 
+        category: body.category, 
         published: body.published,
         coverImage: body.coverImage, 
 

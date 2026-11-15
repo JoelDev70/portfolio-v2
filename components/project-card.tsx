@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import { BrowserMockup } from "./browser-mockup";
 import { SpotlightCard } from "./spotlight-card";
 
@@ -9,12 +9,22 @@ interface ProjectCardProps {
   tags: string[];
   link: string;
   coverImage?: string;
+  category?: string;
+  result?: string;
 }
 
-export function ProjectCard({ title, description, tags, link, coverImage }: ProjectCardProps) {
+export function ProjectCard({ 
+  title, 
+  description, 
+  tags, 
+  link, 
+  coverImage,
+  category,
+  result
+}: ProjectCardProps) {
   return (
-    <SpotlightCard className="group flex flex-col transition-all hover:border-accent/50">
-      {/* Image ou Fallback stylé */}
+    <SpotlightCard className="group flex flex-col h-full transition-all duration-300 hover:border-accent/40">
+      
       <div className="relative w-full p-4 pb-0">
         {coverImage ? (
           <BrowserMockup imageUrl={coverImage} alt={title} />
@@ -30,27 +40,43 @@ export function ProjectCard({ title, description, tags, link, coverImage }: Proj
             </div>
           </div>
         )}
+
+        {category && (
+          <div className="absolute top-6 left-6 z-20">
+            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-background/90 backdrop-blur-sm border border-border text-foreground shadow-sm">
+              {category}
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Contenu textuel */}
-      <div className="flex flex-col flex-1 p-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xl font-bold">{title}</h3>
-          <Link href={link} className="text-muted-foreground hover:text-accent transition-colors">
+      <div className="flex flex-col flex-1 p-6 pt-5">
+        
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <h3 className="text-2xl font-bold leading-tight group-hover:text-accent transition-colors">
+            {title}
+          </h3>
+          <Link href={link} className="p-2 bg-muted/50 rounded-full group-hover:bg-accent/20 group-hover:text-accent transition-colors shrink-0 mt-1">
             <ArrowUpRight className="h-5 w-5" />
           </Link>
         </div>
         
-        <p className="text-muted-foreground text-sm mb-6 flex-1 line-clamp-3">
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">
           {description}
         </p>
 
-        {/* Technologies */}
-        <div className="flex flex-wrap gap-2 mt-auto">
+        {result && (
+          <div className="flex items-center gap-2 mb-6 p-3 bg-accent/5 border border-accent/10 rounded-lg">
+            <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+            <span className="text-sm font-medium text-foreground line-clamp-1">{result}</span>
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border/50">
           {tags.map((tag) => (
             <span 
               key={tag} 
-              className="px-2.5 py-1 text-xs font-medium rounded-full bg-muted text-muted-foreground border border-border/50"
+              className="px-2.5 py-1 text-[11px] font-medium rounded-md bg-muted/50 text-muted-foreground border border-border/30"
             >
               {tag}
             </span>
@@ -60,3 +86,6 @@ export function ProjectCard({ title, description, tags, link, coverImage }: Proj
     </SpotlightCard>
   );
 }
+
+
+

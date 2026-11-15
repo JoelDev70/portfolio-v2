@@ -81,6 +81,7 @@ export const ProjectScalarFieldEnum = {
   title: 'title',
   subtitle: 'subtitle',
   description: 'description',
+  category: 'category',
   context: 'context',
   problem: 'problem',
   solution: 'solution',
