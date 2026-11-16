@@ -5,6 +5,7 @@ import { SkillsSection } from "@/components/skills-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
 import { ContactSection } from "@/components/contact-section";
 import { prisma } from "@/lib/prisma";
+import { AISection } from "@/components/ai-section";
 
 export default async function Home() {
   // On fetch les projets directement ici (Server Component)
@@ -16,6 +17,7 @@ export default async function Home() {
   return (
     <main className="flex flex-col items-center justify-center">
       <Hero />
+      {/* <AISection />  */}
       <ServicesSection />
       <ProjectsSection projects={projects} />
       <SkillsSection />

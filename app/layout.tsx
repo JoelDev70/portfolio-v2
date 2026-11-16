@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { Footer } from "@/components/footer";
 import { FloatingCTA } from "@/components/floating-cta";
+import { AIPopup } from "@/components/ai-popup";
 
 
 
@@ -59,13 +60,14 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ScrollProgress /> 
-          <FloatingCTA /> 
+          {/* <FloatingCTA />  */}
           <Navbar />
           <main className="pt-16 min-h-screen">
             {children}
           </main>
           <Footer /> 
         </ThemeProvider>
+        <AIPopup />
       </body>
     </html>
   );
