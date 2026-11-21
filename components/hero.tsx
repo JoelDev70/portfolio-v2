@@ -41,13 +41,13 @@ export function Hero() {
           </h1>
           
           <h2 className="text-2xl md:text-4xl font-bold text-accent mb-6">
-            Développeur Fullstack
+            Développeur Fullstack Junior
           </h2>
 
           {/* Description */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
             Je conçois des applications web modernes et sécurisées. 
-            Actuellement en dernière année de Génie Informatique, je transforme 
+            Actuellement, je transforme 
             des idées complexes en solutions concrètes.
           </p>
 
@@ -103,8 +103,8 @@ export function Hero() {
                 <Sparkles className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="text-xs font-bold text-foreground">Fullstack Developer</p>
-                <p className="text-[10px] text-muted-foreground">Next.js • Django • Docker</p>
+                <p className="text-xs font-bold text-foreground"> Junior Fullstack Developer</p>
+                <p className="text-[10px] text-muted-foreground">Let's connect</p>
               </div>
             </div>
           </motion.div>
@@ -114,3 +114,4 @@ export function Hero() {
     </section>
   );
 }
+

@@ -30,7 +30,7 @@ const fallbackTestimonials: Testimonial[] = [
     name: "Client Freelance",
     company: "Projet E-commerce",
     role: "Fondateur",
-    content: "Un développeur à l'écoute, qui respecte les délais et livre un code propre. La mise en place de Docker et du CI/CD a été un vrai plus pour notre équipe.",
+    content: "Un développeur à l'écoute, qui respecte les délais et livre une solution propre. La mise en place de Docker et du CI/CD a été un vrai plus pour notre équipe.",
     avatar: null,
     rating: 4,
   },
@@ -48,7 +48,7 @@ const fallbackTestimonials: Testimonial[] = [
 export function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
   const [loading, setLoading] = useState(true);
-  const [isPaused, setIsPaused] = useState(false); // <-- État pour la pause
+  const [isPaused, setIsPaused] = useState(false); // État pour la pause
 
   useEffect(() => {
     fetch("/api/testimonials")

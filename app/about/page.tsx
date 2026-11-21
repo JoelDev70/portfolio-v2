@@ -55,7 +55,7 @@ export default function AboutPage() {
             Salut, je suis <span className="text-accent">Joel</span>.
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed mb-6">
-            Développeur Fullstack passionné, je transforme des idées complexes en applications web modernes, sécurisées et performantes. 
+            Développeur Fullstack Junior passionné, je transforme des idées complexes en applications web modernes, sécurisées et performantes. 
             Mon objectif ? T'aider à concrétiser ton projet avec un code propre et une communication transparente.
           </p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
@@ -63,7 +63,7 @@ export default function AboutPage() {
               📍 Beni, RDC
             </span>
             <span className="px-4 py-2 bg-muted text-muted-foreground rounded-full text-sm font-medium border border-border">
-              🎓 Licence en Génie Informatique
+              🎓  Informatique
             </span>
           </div>
         </motion.div>

@@ -91,7 +91,7 @@ export function ServicesSection() {
                   </div>
                   <h3 className="text-lg font-bold mb-2">DevOps</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                    Conteneurisation Docker, déploiement continu (CI/CD) sur Vercel.
+                    Conteneurisation Docker, déploiement continu (CI/CD).
                   </p>
                   <div className="flex flex-wrap gap-1.5">
                     {["Docker", "CI/CD"].map(tag => (
