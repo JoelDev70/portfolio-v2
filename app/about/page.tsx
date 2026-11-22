@@ -56,7 +56,7 @@ export default function AboutPage() {
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed mb-6">
             Développeur Fullstack Junior passionné, je transforme des idées complexes en applications web modernes, sécurisées et performantes. 
-            Mon objectif ? T'aider à concrétiser ton projet avec un code propre et une communication transparente.
+            Mon objectif ? T'aider à concrétiser ton projet suivant la rigueur technique à travers une communication transparente.
           </p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
             <span className="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium border border-accent/20">
@@ -95,7 +95,7 @@ export default function AboutPage() {
               </div>
               <p className="text-muted-foreground text-sm">
                 Conception et développement d'applications web sur mesure pour des clients locaux et internationaux. 
-                Spécialisation sur Next.js, Django et la sécurisation des données.
+                J'accompagne les entreprises dans la digitalisation de leurs processus et la sécurisation des données sensibles. Gestion complète des projets, du cahier des charges au déploiement.
               </p>
             </div>
           </motion.div>
@@ -117,8 +117,7 @@ export default function AboutPage() {
                 <span className="text-sm text-accent font-medium">2025 - 2026</span>
               </div>
               <p className="text-muted-foreground text-sm">
-                Développement d'une plateforme d'exportation complète. Plus de 10 000 lignes de code, 
-                mise en place de 62 tests automatisés, CI/CD et sécurité de niveau bancaire.
+                Développement d'une plateforme d'exportation complète. Mise en place d'une architecture sécurisée de 62 tests automatisés et d'un pipeline CI/CD. Réduction de 40% du temps de traitement des dossiers clients.
               </p>
             </div>
           </motion.div>
@@ -152,9 +151,10 @@ export default function AboutPage() {
       <section className="mb-24">
         <h2 className="text-3xl font-bold mb-12 text-center">Pourquoi travailler avec moi ?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
           {[
             { icon: CheckCircle2, title: "Code de qualité", desc: "Je ne livre pas juste un site qui marche. Je livre un code testé, documenté et maintenable." },
-            { icon: ShieldCheck, title: "Sécurité d'abord", desc: "Protection des données, authentification forte (JWT) et bonnes pratiques de sécurité." },
+            { icon: ShieldCheck, title: "Sécurité d'abord", desc: "Protection des données, authentification forte (JWT) et bonnes pratiques de sécurité. La sécurité n'est pas une option, c'est une fondation." },
             { icon: Zap, title: "Communication", desc: "Un suivi régulier, des points clairs et une réactivité totale pour que tu sois toujours informé." }
           ].map((item, index) => (
             <motion.div 
@@ -183,7 +183,7 @@ export default function AboutPage() {
       >
         <h2 className="text-3xl font-bold mb-4">Prêt à lancer ton projet ?</h2>
         <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-          Discutons de tes besoins. Je te réponds sous 24h pour voir comment on peut collaborer.
+           Discutons de vos objectifs et voyons comment je peux vous aider à les atteindre. Réponse garantie sous 24h pour collaboration.
         </p>
         <Link href="/#contact" className="inline-flex items-center justify-center px-8 py-4 bg-accent text-accent-foreground font-bold rounded-xl hover:bg-accent/90 transition-colors">
           Discutons de ton projet

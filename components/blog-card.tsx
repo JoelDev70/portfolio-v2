@@ -24,12 +24,9 @@ export function BlogCard({ slug, title, excerpt, date, readTime, tags, coverImag
       transition={{ duration: 0.5 }}
       className="group relative flex flex-col items-start bg-muted/10 border border-border/50 rounded-2xl hover:border-accent/50 hover:bg-muted/30 transition-all duration-300 overflow-hidden"
     >
-      {/* Effet de halo au survol */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-accent/0 via-accent/5 to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10" />
-
-      {/* Image de couverture (si elle existe) */}
+      {/* Image (Hauteur encore plus réduite : h-36) */}
       {coverImage && (
-        <div className="relative w-full aspect-video overflow-hidden">
+        <div className="relative w-full h-36 overflow-hidden">
           <Image 
             src={coverImage} 
             alt={title} 
@@ -39,40 +36,41 @@ export function BlogCard({ slug, title, excerpt, date, readTime, tags, coverImag
         </div>
       )}
 
-      {/* Contenu de la carte avec padding */}
-      <div className="p-8 w-full flex flex-col flex-1 relative z-20">
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-          <span className="flex items-center gap-1.5">
-            <Calendar className="h-4 w-4" /> {date}
+      {/* Contenu (Padding réduit p-4) */}
+      <div className="p-4 w-full flex flex-col flex-1">
+        <div className="flex items-center gap-3 text-[10px] text-muted-foreground mb-2">
+          <span className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" /> {date}
           </span>
-          <span className="flex items-center gap-1.5">
-            <Clock className="h-4 w-4" /> {readTime}
+          <span className="flex items-center gap-1">
+            <Clock className="h-3 w-3" /> {readTime}
           </span>
         </div>
 
-        <h2 className="text-2xl font-bold mb-3 group-hover:text-accent transition-colors">
-          <Link href={`/blog/${slug}`} className="focus:outline-none">
+        <h2 className="text-base font-bold mb-2 group-hover:text-accent transition-colors line-clamp-2 leading-tight">
+          <Link href={`/blog/${slug}`}>
             {title}
           </Link>
         </h2>
 
-        <p className="text-muted-foreground mb-6 line-clamp-3">
+        <p className="text-muted-foreground text-xs mb-3 line-clamp-2">
           {excerpt}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-6">
-          {tags.map((tag) => (
-            <span key={tag} className="px-3 py-1 text-xs font-medium rounded-full bg-background border border-border text-muted-foreground group-hover:border-accent/30 transition-colors">
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {tags.slice(0, 2).map((tag) => (
+            <span key={tag} className="px-1.5 py-0.5 text-[9px] font-medium rounded bg-background border border-border text-muted-foreground">
               {tag}
             </span>
           ))}
         </div>
 
-        <Link href={`/blog/${slug}`} className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline mt-auto">
+        <Link href={`/blog/${slug}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline mt-auto">
           Lire l'article 
-          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </motion.article>
   );
 }
+
