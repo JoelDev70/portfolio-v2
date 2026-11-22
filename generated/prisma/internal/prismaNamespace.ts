@@ -995,6 +995,7 @@ export const CommentScalarFieldEnum = {
   content: 'content',
   approved: 'approved',
   postId: 'postId',
+  parentId: 'parentId',
   createdAt: 'createdAt'
 } as const
 

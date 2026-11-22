@@ -103,12 +103,18 @@ model Testimonial {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   author    String
   email     String
-  content   String   @db.Text
-  approved  Boolean  @default(false)
+  content   String    @db.Text
+  approved  Boolean   @default(true)
   postId    String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  // Relation pour les réponses
+  parentId  String?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+
+  createdAt DateTime  @default(now())
 }
