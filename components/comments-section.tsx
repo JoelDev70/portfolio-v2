@@ -6,6 +6,7 @@ import { MessageSquare, Send, Reply } from "lucide-react";
 interface Comment {
   id: string;
   author: string;
+  email: string;
   content: string;
   createdAt: string;
   replies?: Comment[];
@@ -17,15 +18,15 @@ export function CommentsSection({ postId }: { postId: string }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   
-  // Mémorisation des infos utilisateur
   const [userInfo, setUserInfo] = useState({ name: "", email: "" });
 
+  const getAvatarUrl = (email: string) => {
+    return `https://api.dicebear.com/7.x/initials/svg?seed=${email}&backgroundColor=06b6d4&textColor=ffffff`;
+  };
+
   useEffect(() => {
-    // Charge les infos depuis le localStorage au démarrage
     const saved = localStorage.getItem("commentUserInfo");
-    if (saved) {
-      setUserInfo(JSON.parse(saved));
-    }
+    if (saved) setUserInfo(JSON.parse(saved));
   }, []);
 
   const fetchComments = () => {
@@ -42,52 +43,50 @@ export function CommentsSection({ postId }: { postId: string }) {
   }, [postId]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, parentId: string | null = null) => {
-  e.preventDefault();
-  setStatus("loading"); // On met le statut en chargement
+    e.preventDefault();
+    setStatus("loading");
 
-  const form = e.currentTarget;
-  const formData = new FormData(form);
-  
-  const content = formData.get("content") as string;
-  if (!content || content.trim() === "") {
-    setStatus("idle"); // On annule si c'est vide
-    return;
-  }
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    const content = formData.get("content") as string;
+    if (!content || content.trim() === "") {
+      setStatus("idle");
+      return;
+    }
 
-  const name = (formData.get("author") as string) || userInfo.name;
-  const email = (formData.get("email") as string) || userInfo.email;
+    const name = (formData.get("author") as string) || userInfo.name;
+    const email = (formData.get("email") as string) || userInfo.email;
 
-  if (formData.get("author") && formData.get("email")) {
-    const newInfo = { name: formData.get("author") as string, email: formData.get("email") as string };
-    setUserInfo(newInfo);
-    localStorage.setItem("commentUserInfo", JSON.stringify(newInfo));
-  }
+    if (formData.get("author") && formData.get("email")) {
+      const newInfo = { name: formData.get("author") as string, email: formData.get("email") as string };
+      setUserInfo(newInfo);
+      localStorage.setItem("commentUserInfo", JSON.stringify(newInfo));
+    }
 
-  // On s'assure que parentId est bien inclus
-  const data = { author: name, email, content, postId, parentId };
+    const data = { author: name, email, content, postId, parentId };
 
-  try {
-    const res = await fetch("/api/comments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (res.ok) {
-      setStatus("success");
-      form.reset();
-      setReplyingTo(null);
-      fetchComments(); // Recharge
-      setTimeout(() => setStatus("idle"), 3000);
-    } else {
+      if (res.ok) {
+        setStatus("success");
+        form.reset();
+        setReplyingTo(null);
+        fetchComments();
+        setTimeout(() => setStatus("idle"), 3000);
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
       setStatus("error");
     }
-  } catch (err) {
-    setStatus("error");
-  }
-};
+  };
 
-  // Permet de supprimer ses infos mémorisées
   const clearUserInfo = () => {
     localStorage.removeItem("commentUserInfo");
     setUserInfo({ name: "", email: "" });
@@ -108,25 +107,35 @@ export function CommentsSection({ postId }: { postId: string }) {
         ) : (
           comments.map((comment) => (
             <div key={comment.id} className="p-5 bg-muted/10 border border-border rounded-xl">
-              <div className="flex justify-between items-center mb-2">
-                <p className="font-bold">{comment.author}</p>
-                <p className="text-xs text-muted-foreground">
-                  {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
-                </p>
-              </div>
-              <p className="text-muted-foreground text-sm mb-3">{comment.content}</p>
               
-              <button 
-                onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline"
-              >
-                <Reply className="h-3 w-3" /> Répondre
-              </button>
+              {/* En-tête du commentaire avec Avatar */}
+              <div className="flex items-start gap-4 mb-2">
+                <img 
+                  src={getAvatarUrl(comment.email || comment.author)} 
+                  alt={comment.author} 
+                  className="w-10 h-10 rounded-full border border-border shrink-0"
+                />
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="font-bold">{comment.author}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground text-sm mb-3">{comment.content}</p>
+                  
+                  <button 
+                    onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline"
+                  >
+                    <Reply className="h-3 w-3" /> Répondre
+                  </button>
+                </div>
+              </div>
 
               {/* Formulaire de réponse */}
               {replyingTo === comment.id && (
                 <form onSubmit={(e) => handleSubmit(e, comment.id)} className="mt-4 p-4 bg-background border border-border rounded-lg space-y-3">
-                  {/* Si l'utilisateur n'a pas encore d'infos mémorisées, on affiche les champs */}
                   {(!userInfo.name || !userInfo.email) && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <input name="author" required placeholder="Votre nom" className="w-full p-2 bg-muted/30 border border-border rounded-md text-sm" />
@@ -149,18 +158,25 @@ export function CommentsSection({ postId }: { postId: string }) {
                 </form>
               )}
 
-              {/* Affichage des réponses */}
+              {/* Affichage des réponses avec Avatar */}
               {comment.replies && comment.replies.length > 0 && (
                 <div className="mt-4 pl-6 border-l-2 border-accent/20 space-y-4">
                   {comment.replies.map(reply => (
-                    <div key={reply.id} className="p-4 bg-background/50 rounded-lg">
-                      <div className="flex justify-between items-center mb-1">
-                        <p className="font-bold text-sm">{reply.author}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(reply.createdAt).toLocaleDateString("fr-FR")}
-                        </p>
+                    <div key={reply.id} className="flex items-start gap-3 p-4 bg-background/50 rounded-lg">
+                      <img 
+                        src={getAvatarUrl(reply.email || reply.author)} 
+                        alt={reply.author} 
+                        className="w-8 h-8 rounded-full border border-border shrink-0"
+                      />
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <p className="font-bold text-sm">{reply.author}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(reply.createdAt).toLocaleDateString("fr-FR")}
+                          </p>
+                        </div>
+                        <p className="text-muted-foreground text-sm">{reply.content}</p>
                       </div>
-                      <p className="text-muted-foreground text-sm">{reply.content}</p>
                     </div>
                   ))}
                 </div>
