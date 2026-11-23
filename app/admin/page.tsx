@@ -1,18 +1,80 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MessagesList } from "@/components/messages-list";
 import { AdminCommentsList } from "@/components/admin-comments-list";
+import { Edit, Trash2, X } from "lucide-react";
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  
+  // États pour les données
+  const [projects, setProjects] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+  
+  // État pour l'élément en cours d'édition
+  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingType, setEditingType] = useState<"project" | "post" | "testimonial" | null>(null);
+
   const [activeTab, setActiveTab] = useState<"project" | "post" | "messages" | "testimonial" | "comments">("project");
 
   const ADMIN_PASSWORD = "joel2026"; 
+
+  // Charger les données quand on est authentifié
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
+
+
+  const fetchData = async () => {
+    try {
+      const pRes = await fetch("/api/projects");
+      if (pRes.ok) setProjects(await pRes.json());
+
+      const postRes = await fetch("/api/posts");
+      if (postRes.ok) setPosts(await postRes.json());
+
+      const tRes = await fetch("/api/testimonials");
+      if (tRes.ok) {
+        const data = await tRes.json();
+        setTestimonials(Array.isArray(data) ? data : []);
+      }
+    } catch (error) {
+      console.error("Erreur fetchData", error);
+    }
+  };
+
+  // const fetchData = async () => {
+  //   fetch("/api/projects").then(res => res.json()).then(setProjects);
+  //   fetch("/api/posts").then(res => res.json()).then(setPosts);
+  //   fetch("/api/testimonials").then(res => res.json()).then(setTestimonials);
+  // };
+
+
+  //   const fetchData = async () => {
+  //   try {
+  //     const pRes = await fetch("/api/projects");
+  //     if (pRes.ok) setProjects(await pRes.json());
+
+  //     const postRes = await fetch("/api/posts");
+  //     if (postRes.ok) setPosts(await postRes.json());
+
+  //     const tRes = await fetch("/api/testimonials");
+  //     if (tRes.ok) {
+  //       const data = await tRes.json();
+  //       setTestimonials(Array.isArray(data) ? data : []); 
+  //     }
+  //   } catch (error) {
+  //     console.error("Erreur fetchData", error);
+  //   }
+  // };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +84,44 @@ export default function AdminPage() {
     } else {
       setError("Mot de passe incorrect");
     }
+  };
+
+  // Fonction pour supprimer un élément
+  const handleDelete = async (id: string, type: string) => {
+    if (!confirm("Voulez-vous vraiment supprimer cet élément ?")) return;
+    
+    const endpoint = type === "project" ? "/api/projects" : type === "post" ? "/api/posts" : "/api/testimonials";
+    
+    try {
+      const res = await fetch(endpoint, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      
+      if (res.ok) {
+        fetchData(); // Recharge les données
+        alert("Supprimé avec succès !");
+      } else {
+        alert("Erreur lors de la suppression");
+      }
+    } catch (err) {
+      alert("Erreur réseau");
+    }
+  };
+
+  // Fonction pour lancer l'édition
+  const handleEdit = (item: any, type: "project" | "post" | "testimonial") => {
+    setEditingItem(item);
+    setEditingType(type);
+    // On scroll vers le haut pour voir le formulaire
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Fonction pour annuler l'édition
+  const cancelEdit = () => {
+    setEditingItem(null);
+    setEditingType(null);
   };
 
   if (!isAuthenticated) {
@@ -59,7 +159,10 @@ export default function AdminPage() {
         {["project", "post", "testimonial", "comments", "messages"].map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab as any)}
+            onClick={() => {
+              setActiveTab(tab as any);
+              cancelEdit(); // Annule l'édition quand on change d'onglet
+            }}
             className={`pb-2 px-4 font-medium capitalize transition-colors ${activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"}`}
           >
             {tab === "project" ? "Projets" : tab === "post" ? "Articles (DevUp)" : tab === "testimonial" ? "Témoignages" : tab === "comments" ? "Commentaires" : "Messages"}
@@ -69,289 +172,374 @@ export default function AdminPage() {
 
       {/* --- ONGLET PROJET --- */}
       {activeTab === "project" && (
-        <div className="p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
-          <h2 className="text-xl font-bold mb-4">Ajouter un projet</h2>
-          <form className="space-y-4" onSubmit={async (e) => {
-            e.preventDefault();
-            const form = e.target as HTMLFormElement;
-            const formData = new FormData(form);
+        <div className="space-y-8">
+          {/* Formulaire */}
+          <div className="p-6 border border-border rounded-xl bg-muted/10">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">
+                {editingType === "project" && editingItem ? "Modifier le projet" : "Ajouter un projet"}
+              </h2>
+              {editingType === "project" && (
+                <button onClick={cancelEdit} className="text-sm text-red-500 flex items-center gap-1">
+                  <X className="h-4 w-4" /> Annuler
+                </button>
+              )}
+            </div>
             
-            const projectData = {
-              title: formData.get("title"),
-              slug: formData.get("title")?.toString().toLowerCase().replace(/\s+/g, '-'),
-              description: formData.get("description"),
-              context: formData.get("context"),
-              problem: formData.get("problem"),
-              solution: formData.get("solution"),
-              results: formData.get("results"),
-              techStack: formData.get("techStack")?.toString().split(',').map(s => s.trim()),
-              liveUrl: formData.get("liveUrl"), 
-              repoUrl: formData.get("repoUrl"),
-              published: true,
-            };
+            <form className="space-y-4" key={editingItem?.id || "new"} onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const formData = new FormData(form);
+              
+              const projectData = {
+                id: editingType === "project" ? editingItem?.id : undefined,
+                title: formData.get("title"),
+                slug: formData.get("title")?.toString().toLowerCase().replace(/\s+/g, '-'),
+                description: formData.get("description"),
+                context: formData.get("context"),
+                problem: formData.get("problem"),
+                solution: formData.get("solution"),
+                results: formData.get("results"),
+                techStack: formData.get("techStack")?.toString().split(',').map(s => s.trim()),
+                liveUrl: formData.get("liveUrl"), 
+                repoUrl: formData.get("repoUrl"),
+                category: formData.get("category"),
+                published: true,
+              };
 
-            try {
-              const res = await fetch("/api/projects", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(projectData),
-              });
+              try {
+                const method = editingType === "project" ? "PUT" : "POST";
+                const res = await fetch("/api/projects", {
+                  method,
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(projectData),
+                });
 
-              if (res.ok) {
-                alert("Projet ajouté avec succès !");
-                form.reset();
-              } else {
-                alert("Erreur lors de l'ajout");
+                if (res.ok) {
+                  alert(editingType === "project" ? "Projet modifié !" : "Projet ajouté !");
+                  form.reset();
+                  cancelEdit();
+                  fetchData();
+                } else {
+                  alert("Erreur");
+                }
+              } catch (err) {
+                alert("Erreur réseau");
               }
-            } catch (err) {
-              alert("Erreur réseau");
-            }
-          }}>
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1">Titre du projet</label>
+                  <input name="title" defaultValue={editingType === "project" ? editingItem?.title : ""} required className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Catégorie (ex: Application Web)</label>
+                  <input name="category" defaultValue={editingType === "project" ? editingItem?.category : ""} placeholder="Application Web" className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm mb-1">Titre du projet</label>
-                <input name="title" required className="w-full p-2 bg-background border border-border rounded-md" />
+                <label className="block text-sm mb-1">Description courte</label>
+                <textarea name="description" defaultValue={editingType === "project" ? editingItem?.description : ""} required className="w-full p-2 bg-background border border-border rounded-md h-20" />
               </div>
-              <div>
-                <label className="block text-sm mb-1">Catégorie (ex: Application Web)</label>
-                <input name="category" placeholder="Application Web" className="w-full p-2 bg-background border border-border rounded-md" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1">Contexte</label>
+                  <textarea name="context" defaultValue={editingType === "project" ? editingItem?.context : ""} className="w-full p-2 bg-background border border-border rounded-md h-24" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Problème</label>
+                  <textarea name="problem" defaultValue={editingType === "project" ? editingItem?.problem : ""} className="w-full p-2 bg-background border border-border rounded-md h-24" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Solution</label>
+                  <textarea name="solution" defaultValue={editingType === "project" ? editingItem?.solution : ""} className="w-full p-2 bg-background border border-border rounded-md h-24" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Résultats</label>
+                  <textarea name="results" defaultValue={editingType === "project" ? editingItem?.results : ""} className="w-full p-2 bg-background border border-border rounded-md h-24" />
+                </div>
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1">Stack technique (séparée par des virgules)</label>
+                  <input name="techStack" defaultValue={editingType === "project" ? editingItem?.techStack?.join(", ") : ""} className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Lien du site en ligne</label>
+                  <input name="liveUrl" defaultValue={editingType === "project" ? editingItem?.liveUrl : ""} type="url" className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1">Lien GitHub</label>
+                  <input name="repoUrl" defaultValue={editingType === "project" ? editingItem?.repoUrl : ""} type="url" className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Image de couverture</label>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const formData = new FormData();
+                      formData.append("file", file);
+                      try {
+                        const res = await fetch("/api/upload", { method: "POST", body: formData });
+                        const data = await res.json();
+                        if (data.url) {
+                          const inputUrl = document.createElement("input");
+                          inputUrl.type = "hidden";
+                          inputUrl.name = "coverImage";
+                          inputUrl.value = data.url;
+                          e.target.form?.appendChild(inputUrl);
+                          alert("Image uploadée !");
+                        }
+                      } catch (err) {
+                        alert("Erreur upload");
+                      }
+                    }}
+                    className="w-full p-2 bg-background border border-border rounded-md"
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
+                {editingType === "project" ? "Enregistrer les modifications" : "Publier le projet"}
+              </button>
+            </form>
+          </div>
+
+          {/* Liste des projets existants */}
+          <div className="p-6 border border-border rounded-xl bg-muted/10">
+            <h2 className="text-xl font-bold mb-4">Projets existants</h2>
+            <div className="space-y-3">
+              {projects.map((project) => (
+                <div key={project.id} className="flex items-center justify-between p-4 bg-background border border-border rounded-lg">
+                  <div>
+                    <p className="font-bold">{project.title}</p>
+                    <p className="text-sm text-muted-foreground">{project.category}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleEdit(project, "project")} className="p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20"><Edit className="h-4 w-4" /></button>
+                    <button onClick={() => handleDelete(project.id, "project")} className="p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20"><Trash2 className="h-4 w-4" /></button>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm mb-1">Titre du projet</label>
-                <input name="title" required className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Stack technique (séparée par des virgules)</label>
-                <input name="techStack" placeholder="Next.js, Django, PostgreSQL" className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-            </div> */}
-
-            
-            <div>
-              <label className="block text-sm mb-1">Description courte</label>
-              <textarea name="description" required className="w-full p-2 bg-background border border-border rounded-md h-20" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm mb-1">Contexte (Case Study)</label>
-                <textarea name="context" className="w-full p-2 bg-background border border-border rounded-md h-24" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Problème (Case Study)</label>
-                <textarea name="problem" className="w-full p-2 bg-background border border-border rounded-md h-24" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Solution (Case Study)</label>
-                <textarea name="solution" className="w-full p-2 bg-background border border-border rounded-md h-24" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Résultats (Case Study)</label>
-                <textarea name="results" className="w-full p-2 bg-background border border-border rounded-md h-24" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm mb-1">Lien du site en ligne</label>
-                <input name="liveUrl" type="url" placeholder="https://mon-projet.com" className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Lien du dépôt GitHub</label>
-                <input name="repoUrl" type="url" placeholder="https://github.com/..." className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm mb-1">Image de couverture</label>
-              <input 
-                type="file" 
-                accept="image/*"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  const formData = new FormData();
-                  formData.append("file", file);
-                  try {
-                    const res = await fetch("/api/upload", { method: "POST", body: formData });
-                    const data = await res.json();
-                    if (data.url) {
-                      const inputUrl = document.createElement("input");
-                      inputUrl.type = "hidden";
-                      inputUrl.name = "coverImage";
-                      inputUrl.value = data.url;
-                      e.target.form?.appendChild(inputUrl);
-                      alert("Image uploadée !");
-                    }
-                  } catch (err) {
-                    alert("Erreur upload");
-                  }
-                }}
-                className="w-full p-2 bg-background border border-border rounded-md"
-              />
-            </div>
-
-            <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
-              Publier le projet
-            </button>
-          </form>
+          </div>
         </div>
       )}
 
       {/* --- ONGLET ARTICLE --- */}
       {activeTab === "post" && (
-        <div className="p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
-          <h2 className="text-xl font-bold mb-4">Ajouter un article DevUp</h2>
-          <form className="space-y-4" onSubmit={async (e) => {
-            e.preventDefault();
-            const form = e.target as HTMLFormElement;
-            const formData = new FormData(form);
-            
-            const postData = {
-              title: formData.get("title"),
-              slug: formData.get("title")?.toString().toLowerCase().replace(/\s+/g, '-'),
-              excerpt: formData.get("excerpt"),
-              content: formData.get("content"),
-              tags: formData.get("tags")?.toString().split(',').map(s => s.trim()),
-              coverImage: formData.get("coverImage"),
-              published: true,
-            };
+        <div className="space-y-8">
+          <div className="p-6 border border-border rounded-xl bg-muted/10">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">
+                {editingType === "post" && editingItem ? "Modifier l'article" : "Ajouter un article"}
+              </h2>
+              {editingType === "post" && (
+                <button onClick={cancelEdit} className="text-sm text-red-500 flex items-center gap-1">
+                  <X className="h-4 w-4" /> Annuler
+                </button>
+              )}
+            </div>
 
-            try {
-              const res = await fetch("/api/posts", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(postData),
-              });
+            <form className="space-y-4" key={editingItem?.id || "new-post"} onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const formData = new FormData(form);
+              
+              const postData = {
+                id: editingType === "post" ? editingItem?.id : undefined,
+                title: formData.get("title"),
+                slug: formData.get("title")?.toString().toLowerCase().replace(/\s+/g, '-'),
+                excerpt: formData.get("excerpt"),
+                content: formData.get("content"),
+                tags: formData.get("tags")?.toString().split(',').map(s => s.trim()),
+                coverImage: formData.get("coverImage"),
+                published: true,
+              };
 
-              if (res.ok) {
-                alert("Article ajouté avec succès !");
-                form.reset();
-              } else {
-                alert("Erreur lors de l'ajout");
+              try {
+                const method = editingType === "post" ? "PUT" : "POST";
+                const res = await fetch("/api/posts", {
+                  method,
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(postData),
+                });
+
+                if (res.ok) {
+                  alert(editingType === "post" ? "Article modifié !" : "Article ajouté !");
+                  form.reset();
+                  cancelEdit();
+                  fetchData();
+                } else {
+                  alert("Erreur");
+                }
+              } catch (err) {
+                alert("Erreur réseau");
               }
-            } catch (err) {
-              alert("Erreur réseau");
-            }
-          }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm mb-1">Titre de l'article</label>
-                <input name="title" required className="w-full p-2 bg-background border border-border rounded-md" />
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1">Titre de l'article</label>
+                  <input name="title" defaultValue={editingType === "post" ? editingItem?.title : ""} required className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Tags (séparés par des virgules)</label>
+                  <input name="tags" defaultValue={editingType === "post" ? editingItem?.tags?.join(", ") : ""} className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
               </div>
+
               <div>
-                <label className="block text-sm mb-1">Tags (séparés par des virgules)</label>
-                <input name="tags" placeholder="Next.js, Docker, Carrière" className="w-full p-2 bg-background border border-border rounded-md" />
+                <label className="block text-sm mb-1">Extrait</label>
+                <textarea name="excerpt" defaultValue={editingType === "post" ? editingItem?.excerpt : ""} required className="w-full p-2 bg-background border border-border rounded-md h-20" />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-sm mb-1">Extrait (Résumé pour la page d'accueil)</label>
-              <textarea name="excerpt" required className="w-full p-2 bg-background border border-border rounded-md h-20" />
-            </div>
+              <div>
+                <label className="block text-sm mb-1">Contenu (Markdown)</label>
+                <textarea name="content" defaultValue={editingType === "post" ? editingItem?.content : ""} required className="w-full p-2 bg-background border border-border rounded-md h-64" />
+              </div>
 
-            <div>
-              <label className="block text-sm mb-1">Contenu complet (Markdown supporté)</label>
-              <textarea name="content" required className="w-full p-2 bg-background border border-border rounded-md h-64" />
-            </div>
-
-            <div>
-              <label className="block text-sm mb-1">Image de couverture</label>
-              <input 
-                type="file" 
-                accept="image/*"
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  const formData = new FormData();
-                  formData.append("file", file);
-                  try {
-                    const res = await fetch("/api/upload", { method: "POST", body: formData });
-                    const data = await res.json();
-                    if (data.url) {
-                      const inputUrl = document.createElement("input");
-                      inputUrl.type = "hidden";
-                      inputUrl.name = "coverImage";
-                      inputUrl.value = data.url;
-                      e.target.form?.appendChild(inputUrl);
-                      alert("Image uploadée !");
+              <div>
+                <label className="block text-sm mb-1">Image de couverture</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    try {
+                      const res = await fetch("/api/upload", { method: "POST", body: formData });
+                      const data = await res.json();
+                      if (data.url) {
+                        const inputUrl = document.createElement("input");
+                        inputUrl.type = "hidden";
+                        inputUrl.name = "coverImage";
+                        inputUrl.value = data.url;
+                        e.target.form?.appendChild(inputUrl);
+                        alert("Image uploadée !");
+                      }
+                    } catch (err) {
+                      alert("Erreur upload");
                     }
-                  } catch (err) {
-                    alert("Erreur upload");
-                  }
-                }}
-                className="w-full p-2 bg-background border border-border rounded-md"
-              />
-            </div>
+                  }}
+                  className="w-full p-2 bg-background border border-border rounded-md"
+                />
+              </div>
 
-            <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
-              Publier l'article
-            </button>
-          </form>
+              <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
+                {editingType === "post" ? "Enregistrer les modifications" : "Publier l'article"}
+              </button>
+            </form>
+          </div>
+
+          <div className="p-6 border border-border rounded-xl bg-muted/10">
+            <h2 className="text-xl font-bold mb-4">Articles existants</h2>
+            <div className="space-y-3">
+              {posts.map((post) => (
+                <div key={post.id} className="flex items-center justify-between p-4 bg-background border border-border rounded-lg">
+                  <div>
+                    <p className="font-bold">{post.title}</p>
+                    <p className="text-sm text-muted-foreground">{post.excerpt?.substring(0, 50)}...</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleEdit(post, "post")} className="p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20"><Edit className="h-4 w-4" /></button>
+                    <button onClick={() => handleDelete(post.id, "post")} className="p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20"><Trash2 className="h-4 w-4" /></button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
       {/* --- ONGLET TÉMOIGNAGE --- */}
       {activeTab === "testimonial" && (
-        <div className="p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
-          <h2 className="text-xl font-bold mb-4">Ajouter un témoignage</h2>
-          <form className="space-y-4" onSubmit={async (e) => {
-            e.preventDefault();
-            const form = e.target as HTMLFormElement;
-            const formData = new FormData(form);
-            
-            const data = {
-              name: formData.get("name"),
-              role: formData.get("role"),
-              company: formData.get("company"),
-              content: formData.get("content"),
-              avatar: formData.get("avatar"),
-            };
-
-            try {
-              const res = await fetch("/api/testimonials", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-              });
-
-              if (res.ok) {
-                alert("Témoignage ajouté !");
-                form.reset();
-              } else {
-                alert("Erreur");
-              }
-            } catch (err) {
-              alert("Erreur réseau");
-            }
-          }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm mb-1">Nom du client</label>
-                <input name="name" required className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Entreprise</label>
-                <input name="company" required className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-              <div>
-                <label className="block text-sm mb-1">Poste (ex: CEO)</label>
-                <input name="role" required className="w-full p-2 bg-background border border-border rounded-md" />
-              </div>
-              <div>
-              <label className="block text-sm mb-1">Note (sur 5)</label>
-              <select name="rating" className="w-full p-2 bg-background border border-border rounded-md">
-                <option value="5">5 étoiles (Excellent)</option>
-                <option value="4">4 étoiles (Très bien)</option>
-                <option value="3">3 étoiles (Bien)</option>
-                <option value="2">2 étoiles (Moyen)</option>
-                <option value="1">1 étoile (Décevant)</option>
-              </select>
+        <div className="space-y-8">
+          <div className="p-6 border border-border rounded-xl bg-muted/10">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">
+                {editingType === "testimonial" && editingItem ? "Modifier le témoignage" : "Ajouter un témoignage"}
+              </h2>
+              {editingType === "testimonial" && (
+                <button onClick={cancelEdit} className="text-sm text-red-500 flex items-center gap-1">
+                  <X className="h-4 w-4" /> Annuler
+                </button>
+              )}
             </div>
+
+            <form className="space-y-4" key={editingItem?.id || "new-testimonial"} onSubmit={async (e) => {
+              e.preventDefault();
+              const form = e.target as HTMLFormElement;
+              const formData = new FormData(form);
+              
+              const data = {
+                id: editingType === "testimonial" ? editingItem?.id : undefined,
+                name: formData.get("name"),
+                role: formData.get("role"),
+                company: formData.get("company"),
+                content: formData.get("content"),
+                avatar: formData.get("avatar"),
+                rating: formData.get("rating"),
+              };
+
+              try {
+                const method = editingType === "testimonial" ? "PUT" : "POST";
+                const res = await fetch("/api/testimonials", {
+                  method,
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(data),
+                });
+
+                if (res.ok) {
+                  alert(editingType === "testimonial" ? "Témoignage modifié !" : "Témoignage ajouté !");
+                  form.reset();
+                  cancelEdit();
+                  fetchData();
+                } else {
+                  alert("Erreur");
+                }
+              } catch (err) {
+                alert("Erreur réseau");
+              }
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1">Nom du client</label>
+                  <input name="name" defaultValue={editingType === "testimonial" ? editingItem?.name : ""} required className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Entreprise</label>
+                  <input name="company" defaultValue={editingType === "testimonial" ? editingItem?.company : ""} required className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Poste (ex: CEO)</label>
+                  <input name="role" defaultValue={editingType === "testimonial" ? editingItem?.role : ""} required className="w-full p-2 bg-background border border-border rounded-md" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1">Note (sur 5)</label>
+                  <select name="rating" defaultValue={editingType === "testimonial" ? editingItem?.rating : "5"} className="w-full p-2 bg-background border border-border rounded-md">
+                    <option value="5">5 étoiles</option>
+                    <option value="4">4 étoiles</option>
+                    <option value="3">3 étoiles</option>
+                    <option value="2">2 étoiles</option>
+                    <option value="1">1 étoile</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm mb-1">Témoignage</label>
+                <textarea name="content" defaultValue={editingType === "testimonial" ? editingItem?.content : ""} required className="w-full p-2 bg-background border border-border rounded-md h-32" />
+              </div>
               <div>
                 <label className="block text-sm mb-1">Photo de profil</label>
                 <input 
@@ -376,15 +564,29 @@ export default function AdminPage() {
                   className="w-full p-2 bg-background border border-border rounded-md"
                 />
               </div>
+              <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
+                {editingType === "testimonial" ? "Enregistrer les modifications" : "Publier le témoignage"}
+              </button>
+            </form>
+          </div>
+
+          <div className="p-6 border border-border rounded-xl bg-muted/10">
+            <h2 className="text-xl font-bold mb-4">Témoignages existants</h2>
+            <div className="space-y-3">
+              {testimonials.map((testimonial) => (
+                <div key={testimonial.id} className="flex items-center justify-between p-4 bg-background border border-border rounded-lg">
+                  <div>
+                    <p className="font-bold">{testimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={() => handleEdit(testimonial, "testimonial")} className="p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20"><Edit className="h-4 w-4" /></button>
+                    <button onClick={() => handleDelete(testimonial.id, "testimonial")} className="p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20"><Trash2 className="h-4 w-4" /></button>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div>
-              <label className="block text-sm mb-1">Témoignage</label>
-              <textarea name="content" required className="w-full p-2 bg-background border border-border rounded-md h-32" />
-            </div>
-            <button type="submit" className="w-full py-2 bg-accent text-accent-foreground rounded-md hover:bg-accent/90">
-              Publier le témoignage
-            </button>
-          </form>
+          </div>
         </div>
       )}
 
@@ -406,3 +608,4 @@ export default function AdminPage() {
     </div>
   );
 }
+

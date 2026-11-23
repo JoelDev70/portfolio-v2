@@ -35,3 +35,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Erreur lors de la création de l'article" }, { status: 500 });
   }
 }
+
+
+export async function DELETE(request: Request) {
+  try {
+    const { id } = await request.json();
+    await prisma.post.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Erreur" }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const post = await prisma.post.update({
+      where: { id: body.id },
+      data: {
+        title: body.title,
+        excerpt: body.excerpt,
+        content: body.content,
+        tags: body.tags,
+        coverImage: body.coverImage,
+      }
+    });
+    return NextResponse.json(post);
+  } catch (error) {
+    return NextResponse.json({ error: "Erreur" }, { status: 500 });
+  }
+}

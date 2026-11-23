@@ -2,24 +2,47 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
-  const comments = await prisma.comment.findMany({
-    include: { post: { select: { title: true } } },
-    orderBy: { createdAt: "desc" }
-  });
-  return NextResponse.json(comments);
+  try {
+    const comments = await prisma.comment.findMany({
+      where: { 
+        parentId: null // On ne récupère que les parents
+      },
+      include: {
+        post: { 
+          select: { title: true } 
+        },
+        replies: { // <-- LA LIGNE QUI MANQUAIT POUR L'ADMIN
+          orderBy: { createdAt: "asc" }
+        }
+      },
+      orderBy: { createdAt: "desc" }
+    });
+    return NextResponse.json(comments);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Erreur lors de la récupération" }, { status: 500 });
+  }
 }
 
 export async function PATCH(request: Request) {
-  const { id, approved } = await request.json();
-  const comment = await prisma.comment.update({
-    where: { id },
-    data: { approved }
-  });
-  return NextResponse.json(comment);
+  try {
+    const { id, approved } = await request.json();
+    const comment = await prisma.comment.update({
+      where: { id },
+      data: { approved }
+    });
+    return NextResponse.json(comment);
+  } catch (error) {
+    return NextResponse.json({ error: "Erreur lors de la mise à jour" }, { status: 500 });
+  }
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  await prisma.comment.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+  try {
+    const { id } = await request.json();
+    await prisma.comment.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Erreur lors de la suppression" }, { status: 500 });
+  }
 }
