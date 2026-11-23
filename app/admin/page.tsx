@@ -51,30 +51,6 @@ export default function AdminPage() {
     }
   };
 
-  // const fetchData = async () => {
-  //   fetch("/api/projects").then(res => res.json()).then(setProjects);
-  //   fetch("/api/posts").then(res => res.json()).then(setPosts);
-  //   fetch("/api/testimonials").then(res => res.json()).then(setTestimonials);
-  // };
-
-
-  //   const fetchData = async () => {
-  //   try {
-  //     const pRes = await fetch("/api/projects");
-  //     if (pRes.ok) setProjects(await pRes.json());
-
-  //     const postRes = await fetch("/api/posts");
-  //     if (postRes.ok) setPosts(await postRes.json());
-
-  //     const tRes = await fetch("/api/testimonials");
-  //     if (tRes.ok) {
-  //       const data = await tRes.json();
-  //       setTestimonials(Array.isArray(data) ? data : []); 
-  //     }
-  //   } catch (error) {
-  //     console.error("Erreur fetchData", error);
-  //   }
-  // };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -477,40 +453,44 @@ export default function AdminPage() {
               )}
             </div>
 
-            <form className="space-y-4" key={editingItem?.id || "new-testimonial"} onSubmit={async (e) => {
-              e.preventDefault();
-              const form = e.target as HTMLFormElement;
-              const formData = new FormData(form);
-              
-              const data = {
-                id: editingType === "testimonial" ? editingItem?.id : undefined,
-                name: formData.get("name"),
-                role: formData.get("role"),
-                company: formData.get("company"),
-                content: formData.get("content"),
-                avatar: formData.get("avatar"),
-                rating: formData.get("rating"),
-              };
+            <form className="space-y-4" key={editingItem?.id || "new-testimonial"} 
+            onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.target as HTMLFormElement;
+                const formData = new FormData(form);
+                
+                const data = {
+                  id: editingType === "testimonial" ? editingItem?.id : undefined,
+                  name: formData.get("name"),
+                  role: formData.get("role"),
+                  company: formData.get("company"),
+                  content: formData.get("content"),
+                  avatar: formData.get("avatar") || null,
+                  rating: formData.get("rating"), 
+                };
 
-              try {
-                const method = editingType === "testimonial" ? "PUT" : "POST";
-                const res = await fetch("/api/testimonials", {
-                  method,
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(data),
-                });
+                try {
+                  const method = editingType === "testimonial" ? "PUT" : "POST";
+                  const res = await fetch("/api/testimonials", {
+                    method,
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                  });
 
-                if (res.ok) {
-                  alert(editingType === "testimonial" ? "Témoignage modifié !" : "Témoignage ajouté !");
-                  form.reset();
-                  cancelEdit();
-                  fetchData();
-                } else {
-                  alert("Erreur");
+                  if (res.ok) {
+                    alert(editingType === "testimonial" ? "Témoignage modifié !" : "Témoignage ajouté !");
+                    form.reset();
+                    cancelEdit();
+                    fetchData(); 
+                  } else {
+                    const err = await res.json();
+                    console.error(err);
+                    alert("Erreur lors de l'opération");
+                  }
+                } catch (err) {
+                  alert("Erreur réseau");
                 }
-              } catch (err) {
-                alert("Erreur réseau");
-              }
+
             }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
