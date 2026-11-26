@@ -37,7 +37,7 @@ export default function AboutPage() {
           className="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden border-4 border-accent/20 shadow-2xl shadow-accent/20"
         >
           <Image
-            src="/uploads/avatar.JPG"
+            src="/uploads/avatar_.JPG"
             alt="Joel Vutsumbwa"
             fill
             className="object-cover"

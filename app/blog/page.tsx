@@ -9,7 +9,7 @@ const POSTS_PER_PAGE = 6;
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>; // <-- On déclare une Promise
+  searchParams: Promise<{ q?: string; page?: string }>; 
 }) {
   // On attend la résolution de la Promise
   const resolvedParams = await searchParams;
@@ -63,7 +63,7 @@ export default async function BlogPage({
             Le Blog <span className="text-accent">DevUp</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-            Apprendre, coder et évoluer. Mes articles sur le développement Fullstack, les bonnes pratiques et mon parcours.
+            Apprendre, coder et évoluer. Mes articles sur le développement moderne, les bonnes pratiques et mon parcours.
           </p>
         </div>
       </div>

@@ -11,7 +11,7 @@ export async function GET() {
         post: { 
           select: { title: true } 
         },
-        replies: { // <-- LA LIGNE QUI MANQUAIT POUR L'ADMIN
+        replies: { 
           orderBy: { createdAt: "asc" }
         }
       },

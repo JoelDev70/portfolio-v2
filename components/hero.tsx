@@ -46,7 +46,7 @@ export function Hero() {
 
           {/* Description */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-            Je conçois des applications web modernes et sécurisées. 
+            Je conçois des applications web modernes et sécurisées.
             Actuellement, je transforme 
             des idées complexes en solutions concrètes.
           </p>
@@ -88,6 +88,7 @@ export function Hero() {
           >
             <Image
               src="/uploads/avatar.JPG" 
+
               alt="Joel Vutsumbwa"
               fill
               className="object-cover"

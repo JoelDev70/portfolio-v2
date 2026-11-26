@@ -110,7 +110,7 @@ export default async function BlogPostPage({
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-1">Joel Vutsumbwa</h3>
             <p className="text-sm text-muted-foreground mb-3">
-              Développeur Fullstack Freelance. Je partage mes apprentissages sur Next.js, Django et l'architecture web.
+              Développeur Freelance. Je partage mes apprentissages sur le dévéloppement et l'architecture web.
             </p>
             <Link href="/about" className="text-sm font-bold text-accent hover:underline">
               En savoir plus sur moi →

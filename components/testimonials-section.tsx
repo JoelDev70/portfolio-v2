@@ -12,7 +12,7 @@ interface Testimonial {
   role: string;
   content: string;
   avatar: string | null;
-  rating: number; // <-- Ajouté
+  rating: number; 
 }
 
 const fallbackTestimonials: Testimonial[] = [

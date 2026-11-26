@@ -26,7 +26,7 @@ export function ContactSection() {
           >
             
             {/* 1. Image de couverture */}
-            <div className="relative h-48 w-full">
+            <div className="relative  h-48 w-full">
               <Image 
                 src="/uploads/avatar.JPG"
                 alt="Joel Vutsumbwa"

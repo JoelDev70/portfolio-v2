@@ -15,7 +15,8 @@ const skillCategories = [
     color: "text-blue-400",
     bgColor: "bg-blue-400/10",
     core: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML/CSS"],
-    learning: ["Framer Motion", "Three.js"],
+    learning: ["Framer Motion"],
+    // , "Three.js"
   },
   {
     id: "backend",
@@ -41,8 +42,9 @@ const skillCategories = [
     icon: Smartphone,
     color: "text-purple-400",
     bgColor: "bg-purple-400/10",
-    core: ["Figma", "Tests unitaires"],
-    learning: ["Flutter", "React Native"],
+    core: ["Flutter", "Tests unitaires"],
+    learning: ["Figma"],
+    // , "React Native"
   },
 ];
 

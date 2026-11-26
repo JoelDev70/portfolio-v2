@@ -141,7 +141,7 @@ export default function AdminPage() {
             }}
             className={`pb-2 px-4 font-medium capitalize transition-colors ${activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"}`}
           >
-            {tab === "project" ? "Projets" : tab === "post" ? "Articles (DevUp)" : tab === "testimonial" ? "Témoignages" : tab === "comments" ? "Commentaires" : "Messages"}
+            {tab === "project" ? "Projets" : tab === "post" ? "Articles" : tab === "testimonial" ? "Témoignages" : tab === "comments" ? "Commentaires" : "Messages"}
           </button>
         ))}
       </div>

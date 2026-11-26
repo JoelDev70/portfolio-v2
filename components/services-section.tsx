@@ -38,12 +38,12 @@ export function ServicesSection() {
                   <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <Code2 className="h-7 w-7 text-accent" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-3">Développement Fullstack</h3>
+                  <h3 className="text-2xl font-bold mb-3">Développement Fullstack Junior</h3>
                   <p className="text-muted-foreground text-base max-w-lg mb-6 leading-relaxed">
                     Je conçois des applications web complètes, de la base de données à l'interface utilisateur. Un seul interlocuteur pour tout votre projet.
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {["Next.js", "React", "Django", "Node.js", "PostgreSQL"].map(tag => (
+                    {["Next.js", "Django", "Node.js", "PostgreSQL"].map(tag => (
                       <span key={tag} className="px-3 py-1 bg-muted/50 border border-border/50 rounded-lg text-xs font-medium">
                         {tag}
                       </span>
