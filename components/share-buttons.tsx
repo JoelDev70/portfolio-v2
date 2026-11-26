@@ -1,8 +1,7 @@
 "use client";
-
 import { Share2 } from "lucide-react";
 import { FaXTwitter, FaLinkedin, FaFacebook, FaWhatsapp } from "react-icons/fa6";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 interface ShareButtonsProps {
   url: string;
@@ -44,7 +43,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
     },
   ];
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -52,7 +51,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, x: 20 },
     visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300 } },
   };

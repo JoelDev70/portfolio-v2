@@ -12,12 +12,10 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   
-  // États pour les données
   const [projects, setProjects] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
   
-  // État pour l'élément en cours d'édition
   const [editingItem, setEditingItem] = useState<any>(null);
   const [editingType, setEditingType] = useState<"project" | "post" | "testimonial" | null>(null);
 
@@ -25,13 +23,11 @@ export default function AdminPage() {
 
   const ADMIN_PASSWORD = "joel2026"; 
 
-  // Charger les données quand on est authentifié
   useEffect(() => {
     if (isAuthenticated) {
       fetchData();
     }
   }, [isAuthenticated]);
-
 
   const fetchData = async () => {
     try {
@@ -51,7 +47,6 @@ export default function AdminPage() {
     }
   };
 
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === ADMIN_PASSWORD) {
@@ -62,7 +57,6 @@ export default function AdminPage() {
     }
   };
 
-  // Fonction pour supprimer un élément
   const handleDelete = async (id: string, type: string) => {
     if (!confirm("Voulez-vous vraiment supprimer cet élément ?")) return;
     
@@ -76,7 +70,7 @@ export default function AdminPage() {
       });
       
       if (res.ok) {
-        fetchData(); // Recharge les données
+        fetchData();
         alert("Supprimé avec succès !");
       } else {
         alert("Erreur lors de la suppression");
@@ -86,15 +80,12 @@ export default function AdminPage() {
     }
   };
 
-  // Fonction pour lancer l'édition
   const handleEdit = (item: any, type: "project" | "post" | "testimonial") => {
     setEditingItem(item);
     setEditingType(type);
-    // On scroll vers le haut pour voir le formulaire
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Fonction pour annuler l'édition
   const cancelEdit = () => {
     setEditingItem(null);
     setEditingType(null);
@@ -122,24 +113,25 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-24">
-      <div className="flex justify-between items-center mb-12">
-        <h1 className="text-3xl font-bold">Tableau de bord</h1>
+    // CORRECTION RESPONSIVE : py-8 sur mobile, pb-32 pour la barre du navigateur
+    <div className="max-w-5xl mx-auto px-4 py-8 md:py-24 pb-32 min-h-screen">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 md:mb-12">
+        <h1 className="text-2xl md:text-3xl font-bold">Tableau de bord</h1>
         <button onClick={() => router.push("/")} className="text-sm text-muted-foreground hover:text-accent">
           Retour au site
         </button>
       </div>
 
-      {/* Onglets */}
-      <div className="flex flex-wrap gap-4 mb-8 border-b border-border">
+      {/* Onglets (scrollables sur mobile) */}
+      <div className="flex gap-4 mb-8 border-b border-border overflow-x-auto pb-2 scrollbar-hide">
         {["project", "post", "testimonial", "comments", "messages"].map((tab) => (
           <button
             key={tab}
             onClick={() => {
               setActiveTab(tab as any);
-              cancelEdit(); // Annule l'édition quand on change d'onglet
+              cancelEdit();
             }}
-            className={`pb-2 px-4 font-medium capitalize transition-colors ${activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"}`}
+            className={`pb-2 px-4 font-medium capitalize whitespace-nowrap transition-colors ${activeTab === tab ? "border-b-2 border-accent text-accent" : "text-muted-foreground hover:text-foreground"}`}
           >
             {tab === "project" ? "Projets" : tab === "post" ? "Articles" : tab === "testimonial" ? "Témoignages" : tab === "comments" ? "Commentaires" : "Messages"}
           </button>
@@ -149,10 +141,9 @@ export default function AdminPage() {
       {/* --- ONGLET PROJET --- */}
       {activeTab === "project" && (
         <div className="space-y-8">
-          {/* Formulaire */}
-          <div className="p-6 border border-border rounded-xl bg-muted/10">
+          <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">
+              <h2 className="text-lg md:text-xl font-bold">
                 {editingType === "project" && editingItem ? "Modifier le projet" : "Ajouter un projet"}
               </h2>
               {editingType === "project" && (
@@ -209,7 +200,7 @@ export default function AdminPage() {
                   <input name="title" defaultValue={editingType === "project" ? editingItem?.title : ""} required className="w-full p-2 bg-background border border-border rounded-md" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1">Catégorie (ex: Application Web)</label>
+                  <label className="block text-sm mb-1">Catégorie</label>
                   <input name="category" defaultValue={editingType === "project" ? editingItem?.category : ""} placeholder="Application Web" className="w-full p-2 bg-background border border-border rounded-md" />
                 </div>
               </div>
@@ -290,19 +281,18 @@ export default function AdminPage() {
             </form>
           </div>
 
-          {/* Liste des projets existants */}
-          <div className="p-6 border border-border rounded-xl bg-muted/10">
-            <h2 className="text-xl font-bold mb-4">Projets existants</h2>
+          <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10">
+            <h2 className="text-lg md:text-xl font-bold mb-4">Projets existants</h2>
             <div className="space-y-3">
               {projects.map((project) => (
-                <div key={project.id} className="flex items-center justify-between p-4 bg-background border border-border rounded-lg">
+                <div key={project.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-background border border-border rounded-lg">
                   <div>
                     <p className="font-bold">{project.title}</p>
                     <p className="text-sm text-muted-foreground">{project.category}</p>
                   </div>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleEdit(project, "project")} className="p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20"><Edit className="h-4 w-4" /></button>
-                    <button onClick={() => handleDelete(project.id, "project")} className="p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20"><Trash2 className="h-4 w-4" /></button>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button onClick={() => handleEdit(project, "project")} className="flex-1 sm:flex-none p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20 flex items-center justify-center gap-2"><Edit className="h-4 w-4" /> <span className="sm:hidden">Modifier</span></button>
+                    <button onClick={() => handleDelete(project.id, "project")} className="flex-1 sm:flex-none p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20 flex items-center justify-center gap-2"><Trash2 className="h-4 w-4" /> <span className="sm:hidden">Supprimer</span></button>
                   </div>
                 </div>
               ))}
@@ -314,9 +304,9 @@ export default function AdminPage() {
       {/* --- ONGLET ARTICLE --- */}
       {activeTab === "post" && (
         <div className="space-y-8">
-          <div className="p-6 border border-border rounded-xl bg-muted/10">
+          <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">
+              <h2 className="text-lg md:text-xl font-bold">
                 {editingType === "post" && editingItem ? "Modifier l'article" : "Ajouter un article"}
               </h2>
               {editingType === "post" && (
@@ -418,18 +408,18 @@ export default function AdminPage() {
             </form>
           </div>
 
-          <div className="p-6 border border-border rounded-xl bg-muted/10">
-            <h2 className="text-xl font-bold mb-4">Articles existants</h2>
+          <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10">
+            <h2 className="text-lg md:text-xl font-bold mb-4">Articles existants</h2>
             <div className="space-y-3">
               {posts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between p-4 bg-background border border-border rounded-lg">
+                <div key={post.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-background border border-border rounded-lg">
                   <div>
                     <p className="font-bold">{post.title}</p>
                     <p className="text-sm text-muted-foreground">{post.excerpt?.substring(0, 50)}...</p>
                   </div>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleEdit(post, "post")} className="p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20"><Edit className="h-4 w-4" /></button>
-                    <button onClick={() => handleDelete(post.id, "post")} className="p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20"><Trash2 className="h-4 w-4" /></button>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button onClick={() => handleEdit(post, "post")} className="flex-1 sm:flex-none p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20 flex items-center justify-center gap-2"><Edit className="h-4 w-4" /> <span className="sm:hidden">Modifier</span></button>
+                    <button onClick={() => handleDelete(post.id, "post")} className="flex-1 sm:flex-none p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20 flex items-center justify-center gap-2"><Trash2 className="h-4 w-4" /> <span className="sm:hidden">Supprimer</span></button>
                   </div>
                 </div>
               ))}
@@ -441,9 +431,9 @@ export default function AdminPage() {
       {/* --- ONGLET TÉMOIGNAGE --- */}
       {activeTab === "testimonial" && (
         <div className="space-y-8">
-          <div className="p-6 border border-border rounded-xl bg-muted/10">
+          <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">
+              <h2 className="text-lg md:text-xl font-bold">
                 {editingType === "testimonial" && editingItem ? "Modifier le témoignage" : "Ajouter un témoignage"}
               </h2>
               {editingType === "testimonial" && (
@@ -550,18 +540,18 @@ export default function AdminPage() {
             </form>
           </div>
 
-          <div className="p-6 border border-border rounded-xl bg-muted/10">
-            <h2 className="text-xl font-bold mb-4">Témoignages existants</h2>
+          <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10">
+            <h2 className="text-lg md:text-xl font-bold mb-4">Témoignages existants</h2>
             <div className="space-y-3">
               {testimonials.map((testimonial) => (
-                <div key={testimonial.id} className="flex items-center justify-between p-4 bg-background border border-border rounded-lg">
+                <div key={testimonial.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 bg-background border border-border rounded-lg">
                   <div>
                     <p className="font-bold">{testimonial.name}</p>
                     <p className="text-sm text-muted-foreground">{testimonial.company}</p>
                   </div>
-                  <div className="flex gap-2">
-                    <button onClick={() => handleEdit(testimonial, "testimonial")} className="p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20"><Edit className="h-4 w-4" /></button>
-                    <button onClick={() => handleDelete(testimonial.id, "testimonial")} className="p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20"><Trash2 className="h-4 w-4" /></button>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button onClick={() => handleEdit(testimonial, "testimonial")} className="flex-1 sm:flex-none p-2 bg-blue-500/10 text-blue-500 rounded-md hover:bg-blue-500/20 flex items-center justify-center gap-2"><Edit className="h-4 w-4" /> <span className="sm:hidden">Modifier</span></button>
+                    <button onClick={() => handleDelete(testimonial.id, "testimonial")} className="flex-1 sm:flex-none p-2 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500/20 flex items-center justify-center gap-2"><Trash2 className="h-4 w-4" /> <span className="sm:hidden">Supprimer</span></button>
                   </div>
                 </div>
               ))}
@@ -572,16 +562,16 @@ export default function AdminPage() {
 
       {/* --- ONGLET COMMENTAIRES --- */}
       {activeTab === "comments" && (
-        <div className="p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
-          <h2 className="text-xl font-bold mb-4">Modération des commentaires</h2>
+        <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
+          <h2 className="text-lg md:text-xl font-bold mb-4">Modération des commentaires</h2>
           <AdminCommentsList />
         </div>
       )}
 
       {/* --- ONGLET MESSAGES --- */}
       {activeTab === "messages" && (
-        <div className="p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
-          <h2 className="text-xl font-bold mb-4">Messages reçus</h2>
+        <div className="p-4 md:p-6 border border-border rounded-xl bg-muted/10 md:col-span-2">
+          <h2 className="text-lg md:text-xl font-bold mb-4">Messages reçus</h2>
           <MessagesList />
         </div>
       )}
