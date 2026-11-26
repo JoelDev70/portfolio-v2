@@ -20,9 +20,10 @@ export function CommentsSection({ postId }: { postId: string }) {
   
   const [userInfo, setUserInfo] = useState({ name: "", email: "" });
 
+ 
   const getAvatarUrl = (email: string) => {
-    return `https://api.dicebear.com/7.x/initials/svg?seed=${email}&backgroundColor=06b6d4&textColor=ffffff`;
-  };
+  return `https://api.dicebear.com/7.x/initials/svg?seed=${email}&backgroundColor=06b6d4&textColor=ffffff`;
+};
 
   useEffect(() => {
     const saved = localStorage.getItem("commentUserInfo");

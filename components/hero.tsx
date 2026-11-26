@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Terminal, Sparkles } from "lucide-react";
+import { ArrowRight, Terminal, Sparkles, Sparkle, SparkleIcon, MopSparkles, SprayCan, WandSparkles, BroomSparkles, SquareSparkles, SparklesIcon, LucideSpace, ShipCargo, SquarePowerIcon, SquareMousePointer } from "lucide-react";
 import { motion } from "framer-motion";
+import { Spectral } from "next/font/google";
+import { FaSprayCanSparkles, FaWandMagicSparkles } from "react-icons/fa6";
 
 export function Hero() {
   return (
@@ -101,7 +103,7 @@ export function Hero() {
             {/* Badge flottant en bas de l'image */}
             <div className="absolute bottom-4 left-4 right-4 p-3 bg-background/80 backdrop-blur-md rounded-xl border border-border/50 flex items-center gap-3">
               <div className="p-2 bg-accent/20 rounded-lg">
-                <Sparkles className="h-5 w-5 text-accent" />
+                <SquareMousePointer className="h-5 w-5 text-accent" />
               </div>
               <div>
                 <p className="text-xs font-bold text-foreground"> Junior Fullstack Developer</p>

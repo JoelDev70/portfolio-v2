@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { CommentsSection } from "@/components/comments-section";
+import { ShareButtons } from "@/components/share-buttons";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -34,6 +35,10 @@ export default async function BlogPostPage({
   if (!post) {
     notFound();
   }
+
+  // On utilise une URL de base (à remplacer par ton domaine final)
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://joel-vutsumbwa.com";
+  const articleUrl = `${baseUrl}/blog/${post.slug}`;
 
   return (
     <main className="min-h-screen pb-24">
@@ -90,6 +95,11 @@ export default async function BlogPostPage({
       {/* 2. Contenu de l'article */}
       <article className="max-w-3xl mx-auto px-4 py-16">
         
+        {/* Boutons de partage (juste avant le contenu) */}
+        <div className="flex justify-between items-center pb-8 mb-8 border-b border-border/50">
+          <ShareButtons url={articleUrl} title={post.title} />
+        </div>
+
         {/* Rendu Markdown avec une typographie soignée */}
         <div className="prose prose-lg max-w-none dark:prose-invert 
           prose-headings:text-foreground prose-headings:font-bold prose-headings:mt-12 prose-headings:mb-6
@@ -110,7 +120,7 @@ export default async function BlogPostPage({
           <div className="text-center md:text-left">
             <h3 className="text-xl font-bold mb-1">Joel Vutsumbwa</h3>
             <p className="text-sm text-muted-foreground mb-3">
-              Développeur Freelance. Je partage mes apprentissages sur le dévéloppement et l'architecture web.
+              Développeur Freelance. Je partage mes apprentissages sur le développement et l'architecture web.
             </p>
             <Link href="/about" className="text-sm font-bold text-accent hover:underline">
               En savoir plus sur moi →

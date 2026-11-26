@@ -5,18 +5,23 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const postId = searchParams.get("postId");
 
-  if (!postId) {
-    return NextResponse.json({ error: "postId manquant" }, { status: 400 });
-  }
+  if (!postId) return NextResponse.json({ error: "postId manquant" }, { status: 400 });
 
   try {
     const comments = await prisma.comment.findMany({
-      where: { 
-        postId: postId,
-        parentId: null // Uniquement les parents
-      },
+      where: { postId, parentId: null },
       include: {
-        replies: true // On inclut toutes les réponses
+        replies: {
+          // On sélectionne explicitement tous les champs nécessaires
+          select: {
+            id: true,
+            author: true,
+            email: true, 
+            content: true,
+            createdAt: true,
+            approved: true,
+          }
+        }
       },
       orderBy: { createdAt: "desc" }
     });
@@ -26,6 +31,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
+
 
 // Poster un nouveau commentaire
 
