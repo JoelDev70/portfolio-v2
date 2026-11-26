@@ -4,12 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MessagesList } from "@/components/messages-list";
 import { AdminCommentsList } from "@/components/admin-comments-list";
-import { Edit, Trash2, X } from "lucide-react";
+import { Edit, Trash2, X, LogOut } from "lucide-react";
+import { logout } from "./actions";
 
 export default function AdminPage() {
-  const [password, setPassword] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
   
   const [projects, setProjects] = useState<any[]>([]);
@@ -21,13 +19,10 @@ export default function AdminPage() {
 
   const [activeTab, setActiveTab] = useState<"project" | "post" | "messages" | "testimonial" | "comments">("project");
 
-  const ADMIN_PASSWORD = "joel2026"; 
-
+  // On charge les données dès que le composant est monté
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchData();
-    }
-  }, [isAuthenticated]);
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -44,16 +39,6 @@ export default function AdminPage() {
       }
     } catch (error) {
       console.error("Erreur fetchData", error);
-    }
-  };
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      setError("");
-    } else {
-      setError("Mot de passe incorrect");
     }
   };
 
@@ -91,35 +76,23 @@ export default function AdminPage() {
     setEditingType(null);
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <form onSubmit={handleLogin} className="p-8 bg-muted/20 border border-border rounded-xl w-full max-w-md">
-          <h1 className="text-2xl font-bold mb-6 text-center">Accès Admin</h1>
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 bg-background border border-border rounded-md focus:outline-none focus:border-accent"
-          />
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-          <button type="submit" className="w-full py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
-            Se connecter
-          </button>
-        </form>
-      </div>
-    );
-  }
-
   return (
-    // CORRECTION RESPONSIVE : py-8 sur mobile, pb-32 pour la barre du navigateur
     <div className="max-w-5xl mx-auto px-4 py-8 md:py-24 pb-32 min-h-screen">
+      
+      {/* En-tête */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 md:mb-12">
         <h1 className="text-2xl md:text-3xl font-bold">Tableau de bord</h1>
-        <button onClick={() => router.push("/")} className="text-sm text-muted-foreground hover:text-accent">
-          Retour au site
-        </button>
+        <div className="flex items-center gap-4">
+          <button onClick={() => router.push("/")} className="text-sm text-muted-foreground hover:text-accent">
+            Retour au site
+          </button>
+          <button 
+            onClick={() => logout()} 
+            className="text-sm text-red-500 hover:text-red-600 font-medium flex items-center gap-1"
+          >
+            <LogOut className="h-4 w-4" /> Déconnexion
+          </button>
+        </div>
       </div>
 
       {/* Onglets (scrollables sur mobile) */}
@@ -578,4 +551,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
