@@ -4,7 +4,7 @@ import { ContactForm } from "./contact-form";
 import { MapPin, Mail, Phone } from "lucide-react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 import Image from "next/image";
-import { motion } from "framer-motion"; // <-- Import de motion
+import { motion } from "framer-motion"; 
 
 export function ContactSection() {
   return (

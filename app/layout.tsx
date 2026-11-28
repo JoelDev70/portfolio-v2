@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
@@ -9,8 +9,13 @@ import { FloatingCTA } from "@/components/floating-cta";
 import { AIPopup } from "@/components/ai-popup";
 
 
+import { Inter, Space_Grotesk } from "next/font/google";
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
 
-const inter = Inter({ subsets: ["latin"] });
+
+
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -52,7 +57,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={inter.className}>
+      {/* <body className={inter.className}> */}
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
